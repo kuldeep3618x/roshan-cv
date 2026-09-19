@@ -5,6 +5,7 @@ import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
 import Projects from './components/Projects.jsx';
 import Portfolio from './components/Portfolio.jsx';
+import Workspace from './components/Workspace.jsx';
 import Skills from './components/Skills.jsx';
 import Experience from './components/Experience.jsx';
 import Credentials from './components/Credentials.jsx';
@@ -15,6 +16,7 @@ const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
   { id: 'tools', label: 'Tools' },
+  { id: 'workspace', label: 'Workspace' },
   { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
   { id: 'contact', label: 'Contact' },
@@ -88,6 +90,7 @@ export default function App() {
             <About />
             <Projects />
             <Portfolio />
+            <Workspace />
             <Skills />
             <Experience />
             <Credentials />
