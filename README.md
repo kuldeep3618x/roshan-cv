@@ -22,7 +22,7 @@ The downloadable CV is `public/Roshan_Kerketta_CV.pdf`. Replace it when the CV c
 
 - Light and dark themes (follows the system setting, toggle in the nav, remembered per browser).
 - `dist/` is fully static and uses relative paths, so it can be hosted on any static host (GitHub Pages, Netlify, Cloudflare Pages, Azure Static Web Apps).
-- The contact section shows your phone number and email publicly once hosted. Remove them from `profile` in `src/data/cv.js` if you don't want that.
+- The contact section shows your email and LinkedIn publicly once hosted (the phone number is deliberately left out, including from the PDF). Edit `profile` in `src/data/cv.js` to change that.
 
 ## Hosting (GitHub Pages)
 
