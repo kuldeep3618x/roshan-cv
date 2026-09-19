@@ -21,7 +21,20 @@ export default function Reveal({ as: Tag = 'div', className = '', delay = 0, chi
       { threshold: 0.12 }
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // Safety net: if observer callbacks are throttled (background tab, embedded pane), still show what is on screen.
+    const fallback = setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        setShown(true);
+        io.disconnect();
+      }
+    }, 700);
+
+    return () => {
+      clearTimeout(fallback);
+      io.disconnect();
+    };
   }, []);
 
   return (

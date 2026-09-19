@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRoute } from './router.js';
 import Nav from './components/Nav.jsx';
 import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
@@ -8,6 +9,7 @@ import Skills from './components/Skills.jsx';
 import Experience from './components/Experience.jsx';
 import Credentials from './components/Credentials.jsx';
 import Contact from './components/Contact.jsx';
+import ToolPage from './pages/ToolPage.jsx';
 
 const SECTIONS = [
   { id: 'about', label: 'About' },
@@ -29,8 +31,10 @@ function initialTheme() {
 }
 
 export default function App() {
+  const route = useRoute();
   const [theme, setTheme] = useState(initialTheme);
   const [active, setActive] = useState('about');
+  const onHome = route.name === 'home';
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -41,7 +45,19 @@ export default function App() {
     }
   }, [theme]);
 
+  // Returning from a tool page to "#tools" (or any section): the target only exists after the home page renders.
   useEffect(() => {
+    if (!onHome) return;
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    const el = document.getElementById(id);
+    // Instant: this is a page change, and a smooth scroll would race the home page finishing its layout.
+    if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }, [onHome]);
+
+  // Highlight the current section in the nav (home page only).
+  useEffect(() => {
+    if (!onHome) return undefined;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -55,25 +71,34 @@ export default function App() {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [onHome]);
 
   return (
     <>
       <Nav
         sections={SECTIONS}
-        active={active}
+        active={onHome ? active : 'tools'}
         theme={theme}
         onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
       />
       <main>
-        <Hero />
-        <About />
-        <Projects />
-        <Portfolio />
-        <Skills />
-        <Experience />
-        <Credentials />
-        <Contact />
+        {onHome ? (
+          <>
+            <Hero />
+            <About />
+            <Projects />
+            <Portfolio />
+            <Skills />
+            <Experience />
+            <Credentials />
+            <Contact />
+          </>
+        ) : (
+          <>
+            <ToolPage slug={route.slug} />
+            <Contact />
+          </>
+        )}
       </main>
     </>
   );

@@ -21,7 +21,20 @@ export default function Bar({ label, pct }) {
       { threshold: 0.4 }
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // Safety net for throttled observers: fill bars that are already on screen.
+    const fallback = setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        setOn(true);
+        io.disconnect();
+      }
+    }, 700);
+
+    return () => {
+      clearTimeout(fallback);
+      io.disconnect();
+    };
   }, []);
 
   return (

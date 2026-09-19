@@ -44,11 +44,6 @@ export const projects = [
 
 export const portfolio = [
   {
-    name: 'Navisworks Clash Tolerance Manager',
-    stack: 'C# · Navisworks API',
-    text: 'Add-in for Navisworks Manage 2025 that bulk-updates Clash Detective tolerances across all clash tests, in one undoable step, via the copy/edit/commit API pattern.',
-  },
-  {
     name: 'ClashCommentSync',
     stack: 'C# · ClosedXML',
     text: 'Exports and imports Clash Detective comments through Excel for offline review, with bulk sync back into the model.',
@@ -62,11 +57,6 @@ export const portfolio = [
     name: 'ACC → Power BI Pipeline',
     stack: 'Power Query · APS GraphQL',
     text: 'Power Query Online dataflow pulling Revit model data from ACC through the APS Data Exchange GraphQL API into live dashboards.',
-  },
-  {
-    name: 'ACC → Microsoft Fabric Bridge',
-    stack: 'Node.js · APS Model Derivative',
-    text: 'APS web app that pulls element and property data from ACC models and lands it in OneLake / Delta tables for Power BI reporting.',
   },
   {
     name: 'ACC File-Log Automation',
