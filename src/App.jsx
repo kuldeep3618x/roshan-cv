@@ -6,6 +6,8 @@ import About from './components/About.jsx';
 import Projects from './components/Projects.jsx';
 import Portfolio from './components/Portfolio.jsx';
 import Workspace from './components/Workspace.jsx';
+import CommandCenter from './components/CommandCenter.jsx';
+import Development from './components/Development.jsx';
 import Skills from './components/Skills.jsx';
 import Experience from './components/Experience.jsx';
 import Credentials from './components/Credentials.jsx';
@@ -16,6 +18,7 @@ const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
   { id: 'tools', label: 'Tools' },
+  { id: 'command-center', label: 'Command Center' },
   { id: 'workspace', label: 'Workspace' },
   { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
@@ -90,6 +93,8 @@ export default function App() {
             <About />
             <Projects />
             <Portfolio />
+            <CommandCenter />
+            <Development />
             <Workspace />
             <Skills />
             <Experience />
