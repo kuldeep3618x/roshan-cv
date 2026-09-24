@@ -1706,3 +1706,53 @@ ul {
   border: 0;
   border-radius: 10px;
 }
+
+/* hands and in-scene music controls */
+@keyframes ws-tap { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-2px); } }
+.ws-finger { animation: ws-tap 0.32s ease-in-out infinite; }
+.ws-hand2 { transform-box: fill-box; }
+.scene-wrap { position: relative; }
+.scene-ctl {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.scene-ctl__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(10, 16, 32, 0.78);
+  backdrop-filter: blur(8px);
+  color: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.scene-ctl__btn:hover { transform: translateY(-2px); background: rgba(10, 16, 32, 0.92); }
+.scene-ctl__btn.is-on { background: var(--accent); color: #06212a; border-color: transparent; }
+/* audio only: the player sits off-screen and only the music plays */
+.scene-ctl__frame {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 200px;
+  height: 200px;
+  border: 0;
+  pointer-events: none;
+}
+.eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.eq i { display: block; width: 3px; background: currentColor; border-radius: 2px; animation: eq 0.9s ease-in-out infinite; }
+.eq i:nth-child(2) { animation-delay: -0.3s; }
+.eq i:nth-child(3) { animation-delay: -0.6s; }
+.eq i:nth-child(4) { animation-delay: -0.15s; }
+@keyframes eq { 0%, 100% { height: 3px; } 50% { height: 12px; } }

@@ -145,10 +145,11 @@ export default function WorkScene() {
         </g>
 
         {/* keyboard and mouse */}
-        <rect x="336" y="398" width="200" height="12" rx="4" fill="#12141a" />
-        <g fill="#2a2d36">
+        <rect x="330" y="396" width="210" height="15" rx="5" fill="#3a4152" stroke="#5b657c" strokeWidth="1" />
+        <g fill="#7d879c">
           {Array.from({ length: 14 }, (_, i) => (
-            <rect key={i} x={344 + i * 13.5} y="400" width="10" height="3" rx="1" />
+            <rect key={i} x={340 + i * 14} y="399" width="11" height="4" rx="1.5" />
+          
           ))}
         </g>
         <ellipse cx="572" cy="404" rx="12" ry="5" fill="#12141a" />
@@ -159,6 +160,17 @@ export default function WorkScene() {
           <line x1="250" y1="478" x2="250" y2="512" stroke="#2a2a35" strokeWidth="8" />
           <path d="M210 520 L290 520" stroke="#2a2a35" strokeWidth="8" strokeLinecap="round" />
           <rect x="196" y="322" width="108" height="150" rx="34" fill="#22232c" />
+          <g className="ws-arm ws-arm--l">
+            <path d="M200 352 C186 372 186 392 206 402" stroke="#1f8a98" strokeWidth="24" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M206 402 C240 410 290 410 326 408" stroke="#1f8a98" strokeWidth="19" fill="none" strokeLinecap="round" />
+            <rect x="318" y="398" width="9" height="20" rx="4" fill="#176f7b" />
+            <g className="ws-hand2">
+              <ellipse cx="340" cy="408" rx="13" ry="9" fill="#e8b98f" />
+              {[-6, -2, 2, 6].map((dy, i) => (
+                <ellipse key={i} className="ws-finger" cx="354" cy={408 + dy} rx="8" ry="2.8" fill="#e8b98f" style={{ animationDelay: `${i * 0.11}s` }} />
+              ))}
+            </g>
+          </g>
           <g className="ws-body">
             {/* torso (hoodie) */}
             <path d="M186 470 C180 400 190 352 222 334 L278 334 C310 352 320 400 314 470 Z" fill="#1f8a98" />
@@ -183,14 +195,17 @@ export default function WorkScene() {
               <rect x="298" y="258" width="8" height="26" rx="4" fill="#8a6c33" />
             </g>
           </g>
-          {/* arms reaching for the keyboard */}
-          <g className="ws-arm ws-arm--l">
-            <path d="M192 350 C176 392 240 412 340 408" stroke="#1f8a98" strokeWidth="24" fill="none" strokeLinecap="round" />
-            <circle cx="346" cy="408" r="11" fill="#e8b98f" />
-          </g>
+          {/* arms: upper arm, forearm, cuff and a hand with fingers, tapping the keys */}
           <g className="ws-arm ws-arm--r">
-            <path d="M308 350 C326 384 380 400 402 410" stroke="#1f8a98" strokeWidth="24" fill="none" strokeLinecap="round" />
-            <circle cx="410" cy="410" r="11" fill="#e8b98f" />
+            <path d="M304 350 C324 366 336 384 360 398" stroke="#1f8a98" strokeWidth="22" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M360 398 C376 404 392 406 402 407" stroke="#1f8a98" strokeWidth="18" fill="none" strokeLinecap="round" />
+            <rect x="398" y="397" width="9" height="19" rx="4" fill="#176f7b" />
+            <g className="ws-hand2">
+              <ellipse cx="418" cy="407" rx="13" ry="9" fill="#e8b98f" />
+              {[-6, -2, 2, 6].map((dy, i) => (
+                <ellipse key={i} className="ws-finger" cx="432" cy={407 + dy} rx="8" ry="2.8" fill="#e8b98f" style={{ animationDelay: `${0.05 + i * 0.13}s` }} />
+              ))}
+            </g>
           </g>
         </g>
 
@@ -321,19 +336,19 @@ export default function WorkScene() {
         </text>
       </svg>
     </div>
-    <div className="scene-music">
-      <button type="button" className={`scene-music__btn ${music ? 'is-on' : ''}`} aria-pressed={music} onClick={() => setMusic((m) => !m)}>
-        <span aria-hidden="true">{music ? '⏸' : '♪'}</span> {music ? 'Stop the music' : 'Play music while you watch'}
-      </button>
+    <div className="scene-ctl">
       {music && (
         <iframe
-          className="scene-music__frame"
+          className="scene-ctl__frame"
           title="Background music (YouTube player)"
-          src={`https://www.youtube-nocookie.com/embed/${MUSIC_ID}?autoplay=1&loop=1&playlist=${MUSIC_ID}&rel=0`}
+          src={`https://www.youtube-nocookie.com/embed/${MUSIC_ID}?autoplay=1&loop=1&playlist=${MUSIC_ID}&rel=0&playsinline=1`}
           allow="autoplay; encrypted-media"
           referrerPolicy="strict-origin-when-cross-origin"
         />
       )}
+      <button type="button" className={`scene-ctl__btn ${music ? 'is-on' : ''}`} aria-pressed={music} onClick={() => setMusic((v) => !v)}>
+        {music ? <span className="eq" aria-hidden="true"><i /><i /><i /><i /></span> : <span aria-hidden="true">{'\u266A'}</span>} {music ? 'Music on' : 'Play music'}
+      </button>
     </div>
     </div>
   );
