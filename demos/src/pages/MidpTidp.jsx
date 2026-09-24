@@ -32,12 +32,12 @@ export default function MidpTidp() {
           <span className="tag">Only shared: on</span>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <div className="tile" style={{ '--c': '#4cc9f0' }}><small>Scheduled</small><b><CountUp to={240} /></b></div>
-          <div className="tile" style={{ '--c': '#3ddc84' }}><small>Found</small><b style={{ color: '#3ddc84' }}><CountUp to={201} /></b></div>
+          <div className="tile" style={{ '--c': '#38bdf8' }}><small>Scheduled</small><b><CountUp to={240} /></b></div>
+          <div className="tile" style={{ '--c': '#34d399' }}><small>Found</small><b style={{ color: '#34d399' }}><CountUp to={201} /></b></div>
           <div className="tile h"><small>Missing</small><b><CountUp to={39} /></b></div>
-          <div className="tile" style={{ '--c': '#3ee0c1' }}>
+          <div className="tile" style={{ '--c': '#2dd4bf' }}>
             <small>Delivery rate</small><b><CountUp to={84} />%</b>
-            <div style={{ marginTop: 6 }}><GrowBar pct={84} color="linear-gradient(90deg,#3ddc84,#3ee0c1)" /></div>
+            <div style={{ marginTop: 6 }}><GrowBar pct={84} color="linear-gradient(90deg,#34d399,#2dd4bf)" /></div>
           </div>
         </div>
         <div className="card" style={{ flex: 1 }}>
