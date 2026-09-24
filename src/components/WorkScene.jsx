@@ -302,7 +302,7 @@ export default function WorkScene() {
           <rect x="770" y="396" width="56" height="5" rx="2" fill="#1a1a22" />
           <rect x="716" y="288" width="164" height="98" rx="6" fill="#0d0f14" stroke="#2f3340" strokeWidth="3" />
           <rect x="724" y="296" width="148" height="82" rx="3" fill="#15171c" />
-          <text x="731" y="308" fontSize="8" fill="#c99a4e" fontFamily="Inter, sans-serif" fontWeight="700">Command Center</text>
+          <text x="731" y="308" fontSize="8" fill="#c99a4e" fontFamily="Inter, sans-serif" fontWeight="700">BIM-Q Central</text>
           {[0, 1, 2].map((i) => (
             <rect key={i} x={731 + i * 46} y="314" width="40" height="22" rx="3" fill="#1c1e25" stroke="#3a3f4b" />
           ))}

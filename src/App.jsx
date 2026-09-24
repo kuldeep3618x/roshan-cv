@@ -18,7 +18,7 @@ const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
   { id: 'tools', label: 'Tools' },
-  { id: 'command-center', label: 'Command Center' },
+  { id: 'bim-q-central', label: 'BIM-Q Central' },
   { id: 'workspace', label: 'Workspace' },
   { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },

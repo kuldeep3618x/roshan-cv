@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal.jsx';
 import SectionHead from './SectionHead.jsx';
 
-// A glimpse of the APS Command Center I am building: one web app that hosts delivery dashboards and the add-in control board.
+// A glimpse of BIM-Q Central, the platform I am building: one web app that hosts delivery dashboards and the add-in control board.
 // All figures below are invented sample data.
 
 const NAV = ['Executive', 'Model sharing', 'Issues', 'Add-in board'];
@@ -203,9 +203,9 @@ export default function CommandCenter() {
   }, []);
 
   return (
-    <section className="section section--alt" id="command-center">
+    <section className="section section--alt" id="bim-q-central">
       <div className="container">
-        <SectionHead kicker="In development" title="A glimpse of the APS Command Center" />
+        <SectionHead kicker="In development" title="A glimpse of BIM-Q Central" />
         <p className="muted tools__intro">
           One web app on Autodesk Platform Services that brings delivery dashboards and the add-in control board into a
           single place. Click through the tabs; everything here is sample data.
@@ -214,13 +214,13 @@ export default function CommandCenter() {
           <div className="cc" onMouseEnter={() => (paused.current = true)} onMouseLeave={() => (paused.current = false)}>
             <aside className="cc__side">
               <div className="cc__brand">
-                <span className="cc__mark">CC</span>
+                <span className="cc__mark">BQ</span>
                 <div>
-                  <strong>APS Command Center</strong>
+                  <strong>BIM-Q Central</strong>
                   <small>Digital delivery</small>
                 </div>
               </div>
-              <nav aria-label="Command Center sections">
+              <nav aria-label="BIM-Q Central sections">
                 {NAV.map((n, i) => (
                   <button key={n} type="button" className={`cc__nav ${i === tab ? 'is-active' : ''}`} onClick={() => setTab(i)}>
                     {n}

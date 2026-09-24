@@ -1175,7 +1175,7 @@ ul {
   }
 }
 
-/* Command Center glimpse */
+/* BIM-Q Central glimpse */
 .cc {
   display: grid;
   grid-template-columns: 220px 1fr;

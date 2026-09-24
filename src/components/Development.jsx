@@ -5,7 +5,7 @@ const LANES = [
   {
     tag: 'Shipping now',
     tone: 'wip',
-    title: 'APS Command Center and add-in board',
+    title: 'BIM-Q Central and its add-in control board',
     items: [
       'Delivery dashboards on one platform: executive view, model sharing, issues, clash coordination, BIM health, MIDP/TIDP.',
       'Add-in control board: publish versions, roll back, assign to a user, an office or everyone, with a kill switch and usage analytics.',
