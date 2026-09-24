@@ -74,9 +74,9 @@ export default function FabricBridge() {
           <span className="tag">APS connected · Fabric connected</span>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <div className="tile" style={{ '--c': '#8fa876' }}><small>1 · Connect</small><div style={{ marginTop: 7 }}><span className="p ok">APS</span> <span className="p ok">Fabric</span></div></div>
-          <div className="tile" style={{ '--c': '#c99a4e' }}><small>2 · Models selected</small><b style={{ fontSize: 24 }}>{nSel}</b></div>
-          <div className="tile" style={{ '--c': '#7c93ad' }}><small>3 · Destination</small><div style={{ marginTop: 7 }}><span className="p in">OneDrive → OneLake</span></div></div>
+          <div className="tile" style={{ '--c': '#3ddc84' }}><small>1 · Connect</small><div style={{ marginTop: 7 }}><span className="p ok">APS</span> <span className="p ok">Fabric</span></div></div>
+          <div className="tile" style={{ '--c': '#ffc531' }}><small>2 · Models selected</small><b style={{ fontSize: 24 }}>{nSel}</b></div>
+          <div className="tile" style={{ '--c': '#4cc9f0' }}><small>3 · Destination</small><div style={{ marginTop: 7 }}><span className="p in">OneDrive → OneLake</span></div></div>
         </div>
         <div className="card">
           <h4>Choose ACC models</h4>
@@ -95,7 +95,7 @@ export default function FabricBridge() {
           {files.map((f) => (
             <div className="pr" key={f.id}>
               <span className="nm">{f.name}</span>
-              <div className="bar"><i style={{ width: (f.sel ? f.p : 0) + '%', background: f.p >= 100 ? '#8fa876' : '#7c93ad', transition: 'width .3s' }} /></div>
+              <div className="bar"><i style={{ width: (f.sel ? f.p : 0) + '%', background: f.p >= 100 ? '#3ddc84' : '#4cc9f0', transition: 'width .3s' }} /></div>
               <span className="el">{f.sel && f.p > 0 ? fmt(Math.round(f.el * Math.min(1, f.p / 100))) : '—'}</span>
               <span className="pl"><StatusPill f={f} /></span>
             </div>

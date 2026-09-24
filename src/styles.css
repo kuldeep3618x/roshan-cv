@@ -1063,7 +1063,7 @@ ul {
 }
 
 .ws-hand {
-  transform-origin: 0 0;
+  transform-origin: 400px 112px;
   transform-box: view-box;
   animation: ws-spin 6s linear infinite;
 }
@@ -1666,4 +1666,43 @@ ul {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* music toggle under the scene */
+.scene-music {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+.scene-music__btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.scene-music__btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.scene-music__btn.is-on {
+  background: var(--accent);
+  color: #06212a;
+  border-color: var(--accent);
+}
+
+.scene-music__frame {
+  width: 240px;
+  height: 135px;
+  border: 0;
+  border-radius: 10px;
 }

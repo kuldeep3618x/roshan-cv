@@ -1,3 +1,7 @@
+import { useState } from 'react';
+
+const MUSIC_ID = 'aKFfLCHChkQ';
+
 // Animated, anime-style scene: a designer at a desk, working through a day and into the night.
 // Pure SVG + CSS (see .scene in styles.css). No people are depicted from life: the character is stylised and seen from behind.
 
@@ -21,7 +25,9 @@ function Floor({ y, w = 74, h = 16, fill }) {
 }
 
 export default function WorkScene() {
+  const [music, setMusic] = useState(false);
   return (
+    <div className="scene-wrap">
     <div className="scene" role="img" aria-label="Animated illustration of a BIM designer working at a desk from day into night: writing code, coordinating a 3D model, reviewing dashboards and joining a team call.">
       <svg viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice">
         <defs>
@@ -110,12 +116,14 @@ export default function WorkScene() {
         ))}
         <rect x="200" y="112" width="44" height="38" rx="3" fill="#243650" stroke="#c99a4e" />
         <path d="M208 140 L218 126 L226 134 L234 120" stroke="#8fd6cc" strokeWidth="2.5" fill="none" />
-        <g transform="translate(400 112)">
-          <circle r="30" fill="#eceef1" stroke="#c99a4e" strokeWidth="4" />
-          <line className="ws-hand ws-hand--h" x1="0" y1="0" x2="0" y2="-16" stroke="#15171c" strokeWidth="4" strokeLinecap="round" />
-          <line className="ws-hand ws-hand--m" x1="0" y1="0" x2="0" y2="-24" stroke="#15171c" strokeWidth="2.5" strokeLinecap="round" />
-          <circle r="3" fill="#c99a4e" />
-        </g>
+        <circle cx="400" cy="112" r="30" fill="#eceef1" stroke="#c99a4e" strokeWidth="4" />
+        {Array.from({ length: 12 }, (_, i) => {
+          const r = (i * Math.PI) / 6;
+          return <line key={i} x1={400 + Math.sin(r) * 24} y1={112 - Math.cos(r) * 24} x2={400 + Math.sin(r) * 27} y2={112 - Math.cos(r) * 27} stroke="#55697d" strokeWidth="2" />;
+        })}
+        <line className="ws-hand ws-hand--h" x1="400" y1="112" x2="400" y2="98" stroke="#15171c" strokeWidth="4" strokeLinecap="round" />
+        <line className="ws-hand ws-hand--m" x1="400" y1="112" x2="400" y2="90" stroke="#15171c" strokeWidth="2.5" strokeLinecap="round" />
+        <circle cx="400" cy="112" r="3" fill="#c99a4e" />
 
         {/* desk */}
         <rect x="0" y="398" width="960" height="26" fill="#5a4030" />
@@ -135,6 +143,15 @@ export default function WorkScene() {
           <path className="ws-leaf" d="M57 368 C40 340 36 330 44 318 C54 332 58 350 57 368Z" fill="#6fa39d" />
           <path className="ws-leaf ws-leaf--b" d="M57 368 C70 338 78 330 74 312 C62 328 56 346 57 368Z" fill="#8fa876" />
         </g>
+
+        {/* keyboard and mouse */}
+        <rect x="336" y="398" width="200" height="12" rx="4" fill="#12141a" />
+        <g fill="#2a2d36">
+          {Array.from({ length: 14 }, (_, i) => (
+            <rect key={i} x={344 + i * 13.5} y="400" width="10" height="3" rx="1" />
+          ))}
+        </g>
+        <ellipse cx="572" cy="404" rx="12" ry="5" fill="#12141a" />
 
         {/* chair + character (seen from behind) */}
         <g>
@@ -174,24 +191,6 @@ export default function WorkScene() {
           <g className="ws-arm ws-arm--r">
             <path d="M308 350 C326 384 380 400 402 410" stroke="#1f8a98" strokeWidth="24" fill="none" strokeLinecap="round" />
             <circle cx="410" cy="410" r="11" fill="#e8b98f" />
-          </g>
-        </g>
-
-        {/* keyboard, mouse, mug */}
-        <rect x="336" y="398" width="200" height="12" rx="4" fill="#12141a" />
-        <g fill="#2a2d36">
-          {Array.from({ length: 14 }, (_, i) => (
-            <rect key={i} x={344 + i * 13.5} y="400" width="10" height="3" rx="1" />
-          ))}
-        </g>
-        <ellipse cx="572" cy="404" rx="12" ry="5" fill="#12141a" />
-        <g>
-          <rect x="606" y="372" width="30" height="28" rx="6" fill="#eceef1" />
-          <path d="M636 380 C650 380 650 394 636 394" stroke="#eceef1" strokeWidth="4" fill="none" />
-          <rect x="606" y="372" width="30" height="7" rx="3" fill="#8a5a3a" />
-          <g className="ws-steam" stroke="#cdd6e3" strokeWidth="3" fill="none" strokeLinecap="round">
-            <path d="M614 366 C608 356 620 350 614 340" />
-            <path d="M626 366 C620 354 632 350 626 338" style={{ animationDelay: '0.8s' }} />
           </g>
         </g>
 
@@ -259,6 +258,19 @@ export default function WorkScene() {
           </g>
         </g>
 
+        {/* mug */}
+        <g>
+          <ellipse cx="621" cy="418" rx="20" ry="5" fill="#2a1d15" opacity="0.6" />
+          <rect x="606" y="390" width="30" height="28" rx="6" fill="#eceef1" />
+          <path d="M636 398 C650 398 650 412 636 412" stroke="#eceef1" strokeWidth="4" fill="none" />
+          <rect x="606" y="390" width="30" height="7" rx="3" fill="#8a5a3a" />
+          <g className="ws-steam" stroke="#cdd6e3" strokeWidth="3" fill="none" strokeLinecap="round">
+            <path d="M614 384 C608 374 620 368 614 358" />
+            <path d="M626 384 C620 372 632 368 626 356" style={{ animationDelay: '0.8s' }} />
+          </g>
+        </g>
+
+
         {/* caption chip */}
         <g>
           {CAPTIONS.map((c, i) => (
@@ -285,18 +297,15 @@ export default function WorkScene() {
         </g>
 
         {/* floating pop-ups */}
-        <g className="ws-pop" style={{ animationDelay: '2s' }}>
-          <rect x="560" y="150" width="120" height="26" rx="13" fill="#8fa876" />
-          <text x="574" y="167" fontSize="11" fontWeight="700" fill="#15171c" fontFamily="Inter, sans-serif">Build succeeded</text>
-        </g>
-        <g className="ws-pop" style={{ animationDelay: '9s' }}>
-          <rect x="520" y="150" width="140" height="26" rx="13" fill="#2cc7d3" />
-          <text x="534" y="167" fontSize="11" fontWeight="700" fill="#15171c" fontFamily="Inter, sans-serif">Clash resolved</text>
-        </g>
-        <g className="ws-pop" style={{ animationDelay: '15s' }}>
-          <rect x="520" y="150" width="130" height="26" rx="13" fill="#f9b233" />
-          <text x="534" y="167" fontSize="11" fontWeight="700" fill="#15171c" fontFamily="Inter, sans-serif">Report updated</text>
-        </g>
+        {[['Build succeeded', '#8fa876', 2], ['Clash resolved', '#2cc7d3', 9], ['Report updated', '#f9b233', 15]].map(([t, c, d]) => {
+          const w = t.length * 7.4 + 36;
+          return (
+            <g key={t} className="ws-pop" style={{ animationDelay: `${d}s` }}>
+              <rect x={560 - w / 2} y="140" width={w} height="28" rx="14" fill={c} />
+              <text x="560" y="159" textAnchor="middle" fontSize="12" fontWeight="700" fill="#15171c" fontFamily="Inter, sans-serif">{t}</text>
+            </g>
+          );
+        })}
         <g className="ws-note" fill="#e0b673">
           <text x="330" y="196" fontSize="18">♪</text>
           <text x="358" y="176" fontSize="14" style={{ animationDelay: '1.2s' }}>♫</text>
@@ -311,6 +320,21 @@ export default function WorkScene() {
           Coding day and night.
         </text>
       </svg>
+    </div>
+    <div className="scene-music">
+      <button type="button" className={`scene-music__btn ${music ? 'is-on' : ''}`} aria-pressed={music} onClick={() => setMusic((m) => !m)}>
+        <span aria-hidden="true">{music ? '⏸' : '♪'}</span> {music ? 'Stop the music' : 'Play music while you watch'}
+      </button>
+      {music && (
+        <iframe
+          className="scene-music__frame"
+          title="Background music (YouTube player)"
+          src={`https://www.youtube-nocookie.com/embed/${MUSIC_ID}?autoplay=1&loop=1&playlist=${MUSIC_ID}&rel=0`}
+          allow="autoplay; encrypted-media"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      )}
+    </div>
     </div>
   );
 }

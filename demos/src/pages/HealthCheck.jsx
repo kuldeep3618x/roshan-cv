@@ -26,7 +26,7 @@ export default function HealthCheck() {
     setRunning(true);
     timer.current = setTimeout(() => { setRunning(false); show('Batch complete · report ready to export to Excel'); }, 1800);
   };
-  const tiles = [['all', 'Models', MODELS.length, '#7c93ad'], ['Pass', 'Passed', count('Pass'), '#8fa876'], ['Attention', 'Need attention', count('Attention')], ['Fail', 'Failed', count('Fail'), '#b8594a']];
+  const tiles = [['all', 'Models', MODELS.length, '#4cc9f0'], ['Pass', 'Passed', count('Pass'), '#3ddc84'], ['Attention', 'Need attention', count('Attention')], ['Fail', 'Failed', count('Fail'), '#ff5c7a']];
   const rows = MODELS.filter((m) => filter === 'all' || m.r === filter);
 
   return (
