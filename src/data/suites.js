@@ -6,9 +6,9 @@
 export const suites = [
   /* -------------------------------------------------------------- Navisworks suite */
   {
-    slug: 'obmi-navisworks-tools',
+    slug: 'navisworks-tools-suite',
     n: '07',
-    name: 'OBMI Navisworks Tools',
+    name: 'Navisworks Tools Suite',
     kind: 'Navisworks add-in suite',
     status: 'Built',
     version: 'v2.1.5',
@@ -27,7 +27,7 @@ export const suites = [
       cols: 4,
       rows: 2,
       nodes: [
-        { id: 'user', label: 'BIM coordinator', sub: 'Ribbon tab', col: 0, row: 0, kind: 'actor', desc: 'Works from a single OBMIDev ribbon tab in Navisworks Manage 2025.' },
+        { id: 'user', label: 'BIM coordinator', sub: 'Ribbon tab', col: 0, row: 0, kind: 'actor', desc: 'Works from a single custom ribbon tab in Navisworks Manage 2025.' },
         { id: 'ribbon', label: 'Ribbon commands', sub: 'Plugin entry points', col: 1, row: 0, kind: 'app', desc: 'One command per tool plus Help. Each opens its own non-modal window so the 3D view stays interactive.' },
         { id: 'tools', label: 'Six tool windows', sub: 'WPF, non-modal', col: 2, row: 0, kind: 'app', desc: 'Clash Tolerance, Clash Approval, Clash Analyser, Parameter Checker, Viewpoint Comments, Hide By Category.' },
         { id: 'api', label: 'Navisworks API', sub: 'Clash, model, search', col: 3, row: 0, kind: 'service', desc: 'Clash Detective data, model tree, properties, saved viewpoints and native searches.' },
@@ -63,15 +63,15 @@ export const suites = [
 
   /* -------------------------------------------------------------- Revit suite */
   {
-    slug: 'obmi-revit-tools',
+    slug: 'revit-tools-suite',
     n: '08',
-    name: 'OBMI Revit Tools',
+    name: 'Revit Tools Suite',
     kind: 'Revit add-in suite',
     status: 'Built',
     version: 'v1.4.1',
     released: '5 Oct 2026',
     stack: ['C#', 'Revit API', '.NET Framework 4.8 / .NET 8', 'WPF', 'WiX installer'],
-    tagline: 'Six model-management tools on an OBMI ribbon tab, driven by Excel rules and previewed before anything changes.',
+    tagline: 'Six model-management tools on a custom ribbon tab, driven by Excel rules and previewed before anything changes.',
     problem:
       'Parameters, worksets, links and warnings are cleaned up by hand, differently on every model. The work is repetitive, easy to get wrong and rarely documented.',
     outcome: [
@@ -84,7 +84,7 @@ export const suites = [
       cols: 4,
       rows: 2,
       nodes: [
-        { id: 'user', label: 'BIM manager', sub: 'OBMI ribbon tab', col: 0, row: 0, kind: 'actor', desc: 'Runs the tools from an OBMI tab with panels for parameters, warnings, worksets, links and model health.' },
+        { id: 'user', label: 'BIM manager', sub: 'Ribbon tab', col: 0, row: 0, kind: 'actor', desc: 'Runs the tools from a custom tab with panels for parameters, warnings, worksets, links and model health.' },
         { id: 'tools', label: 'Six tool windows', sub: 'WPF, non-modal', col: 1, row: 0, kind: 'app', desc: 'Each tool is a non-modal window with the same look and tick-box behaviour, including Shift+click ranges.' },
         { id: 'rules', label: 'Rules & settings', sub: 'Excel sheets, JSON config', col: 2, row: 0, kind: 'data', desc: 'Parameter rule sheets, workset rules (rules.json) and the Model Health Check settings.' },
         { id: 'api', label: 'Revit API', sub: 'Document, elements, links', col: 3, row: 0, kind: 'service', desc: 'Elements, parameters, worksets, links and warnings are read and changed through one transaction per apply.' },
@@ -117,11 +117,11 @@ export const suites = [
     video: null,
   },
 
-  /* -------------------------------------------------------------- Meridian */
+  /* -------------------------------------------------------------- BIM-Q Central */
   {
-    slug: 'obmi-meridian',
+    slug: 'bim-q-central',
     n: '09',
-    name: 'OBMI Meridian',
+    name: 'BIM-Q Central',
     kind: 'APS web app',
     status: 'In development',
     stack: ['React', 'TypeScript', 'Vite', 'Node.js', 'Express', 'APS Data Management'],
@@ -129,11 +129,10 @@ export const suites = [
     problem:
       'Model uploads, issues and submission status live in separate places and reach meetings as spreadsheets that are already out of date. Nobody can see at a glance whose model is late.',
     outcome: [
-      'Overview, Issue tracking, Model sharing and Setup pages built on the same stack and design system as the other OBMI tools.',
+      'Overview, Issue tracking, Model sharing and Setup pages built on the same stack and design system as the other tools on this site.',
       'Compares the models each trade is required to share with what is actually in its mapped ACC folders, with compliance against a target.',
       'Issue metrics from the ACC issue-summary export: open, overdue, closure rate, ageing, by trade, category and assignee.',
       'Excel and PDF reports that follow the current filter, with sample-data demo mode.',
-      'Previously shown under the working names Command Center and BIM-Q Central.',
     ],
     diagram: {
       cols: 4,
@@ -169,8 +168,8 @@ export const suites = [
       { t: 'Roles from day one', d: 'BIM Managers configure, coordinators and leads sync and export, stakeholders only view. The first sign-in becomes BIM Manager unless set otherwise.' },
       { t: 'A demo mode with sample data', d: 'With no credentials the app loads a sample project of eight trades and 31 required models, so the product can be shown and tested without touching real project data.' },
     ],
-    video: 'videos/meridian-walkthrough.mp4',
-    videoCaption: 'Walkthrough with sample data, recorded when the platform was called BIM-Q Central.',
+    video: 'videos/bim-q-central-walkthrough.mp4',
+    videoCaption: 'Walkthrough with sample data.',
   },
 
   /* -------------------------------------------------------------- AddinHub */
@@ -189,16 +188,16 @@ export const suites = [
       'A per-user agent keeps each PC in step, with no admin rights and checked downloads.',
       'Usage KPIs, a map and breakdowns by add-in, office, user and command, with CSV export.',
       'A write-only encrypted vault, a device list with revoke, and an audit trail.',
-      'Part of OBMI Meridian: the board is mounted into that web app.',
+      'Part of BIM-Q Central: the board is mounted into that web app.',
     ],
     diagram: {
       cols: 4,
       rows: 2,
       nodes: [
         { id: 'admin', label: 'BIM Manager', sub: 'Admin', col: 0, row: 0, kind: 'actor', desc: 'Registers add-ins, uploads versions, assigns them and can switch one off.' },
-        { id: 'board', label: 'Control board', sub: 'Express middleware + SQLite', col: 1, row: 0, kind: 'app', desc: 'Mounts into the OBMI Meridian web app, which signs users in with Autodesk. Keeps add-ins, assignments, usage, devices and the audit log.' },
+        { id: 'board', label: 'Control board', sub: 'Express middleware + SQLite', col: 1, row: 0, kind: 'app', desc: 'Mounts into the BIM-Q Central web app, which signs users in with Autodesk. Keeps add-ins, assignments, usage, devices and the audit log.' },
         { id: 'agent', label: 'PC agent', sub: 'PowerShell, per user', col: 2, row: 0, kind: 'app', desc: 'Pairs once, then syncs at sign-in and every 15 minutes. Installs, updates or removes add-ins for the Revit and Navisworks years it finds.' },
-        { id: 'addins', label: 'OBMI add-ins', sub: 'Revit / Navisworks', col: 3, row: 0, kind: 'app', desc: 'Each add-in runs a short check at the start of a command that refuses it when it has been disabled, and records one use.' },
+        { id: 'addins', label: 'Revit and Navisworks add-ins', sub: 'Revit / Navisworks', col: 3, row: 0, kind: 'app', desc: 'Each add-in runs a short check at the start of a command that refuses it when it has been disabled, and records one use.' },
         { id: 'vault', label: 'Vault', sub: 'Encrypted, write-only', col: 1, row: 1, kind: 'data', desc: 'Holds shared service credentials. Values can be written but not read back from the board.' },
         { id: 'pol', label: 'Policy & heartbeat', sub: 'Kill switch, status', col: 2, row: 1, kind: 'data', desc: 'The agent reports its version and what is installed or pending, and saves the policy file that add-ins read.' },
       ],
@@ -224,7 +223,7 @@ export const suites = [
       { t: 'Never swap under a running host', d: 'A new version is shown as pending and installed on a later sync instead of replacing files while Revit or Navisworks is using them.' },
       { t: 'Honest about limits', d: 'The agent removes an add-in at the next sync, but a kill switch inside a running session depends on the add-in reading the policy. The Navisworks bundle format also has not yet been proven on a real machine, and the README says so.' },
     ],
-    video: 'videos/meridian-walkthrough.mp4',
-    videoCaption: 'Walkthrough with sample data, recorded when the platform was called BIM-Q Central; it includes the add-in control board.',
+    video: 'videos/bim-q-central-walkthrough.mp4',
+    videoCaption: 'Walkthrough with sample data; it includes the add-in control board.',
   },
 ];

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal.jsx';
 import SectionHead from './SectionHead.jsx';
 
-// A glimpse of OBMI Meridian (formerly BIM-Q Central, originally the APS Command Center), the platform I am building: one web app that hosts delivery dashboards and the add-in control board.
+// A glimpse of BIM-Q Central, the platform I am building: one web app that hosts delivery dashboards and the add-in control board.
 // All figures below are invented sample data.
 
 const NAV = ['Executive', 'Model sharing', 'Issues', 'Add-in board'];
@@ -36,15 +36,15 @@ const ISSUES = [
 ];
 
 const ADDINS = [
-  { name: 'Workset Assigner', host: 'Revit', ver: 'v2.4.1', adoption: 92, on: true },
-  { name: 'Clash Tolerance', host: 'Navisworks', ver: 'v1.8.0', adoption: 81, on: true },
-  { name: 'Clash Analyser', host: 'Navisworks', ver: 'v1.3.2', adoption: 67, on: true },
-  { name: 'Sheet Publisher', host: 'Revit', ver: 'v0.9.0', adoption: 23, on: false },
+  { name: 'Workset Assigner', host: 'Revit', ver: 'v1.4.1', adoption: 92, on: true },
+  { name: 'Clash Tolerance', host: 'Navisworks', ver: 'v2.1.5', adoption: 81, on: true },
+  { name: 'Clash Analyser', host: 'Navisworks', ver: 'v2.1.5', adoption: 67, on: true },
+  { name: 'Link Loader', host: 'Revit', ver: 'v1.4.1', adoption: 23, on: false },
 ];
 
 const FEED = [
   'Model health check passed: Tower A (ARC)',
-  'Add-in v2.4.1 rolled out to 3 offices',
+  'Add-in v1.4.1 rolled out to 3 offices',
   'MIDP check: 39 deliverables missing this week',
   'Clash Analyser opened in 14 sessions today',
   'New ACC issue batch synced (52 items)',
@@ -203,9 +203,9 @@ export default function CommandCenter() {
   }, []);
 
   return (
-    <section className="section section--alt" id="meridian">
+    <section className="section section--alt" id="bim-q-central">
       <div className="container">
-        <SectionHead kicker="In development · formerly BIM-Q Central" title="A glimpse of OBMI Meridian" />
+        <SectionHead kicker="In development" title="A glimpse of BIM-Q Central" />
         <p className="muted tools__intro">
           One web app on Autodesk Platform Services that brings delivery dashboards and the add-in control board into a
           single place. Click through the tabs; everything here is sample data.
@@ -216,11 +216,11 @@ export default function CommandCenter() {
               <div className="cc__brand">
                 <span className="cc__mark">BQ</span>
                 <div>
-                  <strong>OBMI Meridian</strong>
+                  <strong>BIM-Q Central</strong>
                   <small>Digital delivery</small>
                 </div>
               </div>
-              <nav aria-label="OBMI Meridian sections">
+              <nav aria-label="BIM-Q Central sections">
                 {NAV.map((n, i) => (
                   <button key={n} type="button" className={`cc__nav ${i === tab ? 'is-active' : ''}`} onClick={() => setTab(i)}>
                     {n}
