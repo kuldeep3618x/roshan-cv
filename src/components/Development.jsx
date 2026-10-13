@@ -13,7 +13,7 @@ const LANES = [
     ],
   },
   {
-    tag: 'Built',
+    tag: 'Deployed',
     tone: 'built',
     title: 'Tools already in use',
     items: [

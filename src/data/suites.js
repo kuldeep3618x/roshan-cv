@@ -1,6 +1,6 @@
 // Add-in suites and platform apps added in the October 2026 refresh.
 // Facts come from the project READMEs and CHANGELOGs (see the fact sheet). Status words are deliberate:
-// "Built" = released with a version number; "Deployed" = running in production; "In development" = working but not released.
+// "Deployed" = released and in use; "In progress" = being built, not yet released.
 // No client names, tenant details or credentials.
 
 export const suites = [
@@ -13,7 +13,7 @@ export const suites = [
     n: '07',
     name: 'Navisworks Tools Suite',
     kind: 'Navisworks add-in suite',
-    status: 'Built',
+    status: 'Deployed',
     version: 'v2.1.5',
     released: '3 Oct 2026',
     stack: ['C#', '.NET Framework 4.8', 'WPF', 'Navisworks API', 'WiX installer'],
@@ -73,7 +73,7 @@ export const suites = [
     n: '08',
     name: 'Revit Tools Suite',
     kind: 'Revit add-in suite',
-    status: 'Built',
+    status: 'Deployed',
     version: 'v1.4.1',
     released: '5 Oct 2026',
     stack: ['C#', 'Revit API', '.NET Framework 4.8 / .NET 8', 'WPF', 'WiX installer'],
