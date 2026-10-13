@@ -1,6 +1,6 @@
 // Add-in suites and platform apps added in the October 2026 refresh.
 // Facts come from the project READMEs and CHANGELOGs (see the fact sheet). Status words are deliberate:
-// "Built" = released with a version number; "In development" = working but not released.
+// "Built" = released with a version number; "Deployed" = running in production; "In development" = working but not released.
 // No client names, tenant details or credentials.
 
 export const suites = [
@@ -123,7 +123,7 @@ export const suites = [
     n: '09',
     name: 'BIM-Q Central',
     kind: 'APS web app',
-    status: 'In development',
+    status: 'Deployed',
     stack: ['React', 'TypeScript', 'Vite', 'Node.js', 'Express', 'APS Data Management'],
     tagline: 'See whether each trade is sharing its required models on time, and how its issues are progressing.',
     problem:

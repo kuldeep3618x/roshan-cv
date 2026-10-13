@@ -92,7 +92,7 @@ export const experience = [
       'Lead BIM and information management strategy, standards and execution planning across live projects: model quality, information delivery and clash resolution.',
       'Set up and manage Common Data Environment (CDE) structures, workflows and protocols in Autodesk Construction Cloud (ACC), working to ISO 19650 and keeping information governed across all disciplines.',
       'Ship two versioned, installable add-in suites for the team: the Navisworks Tools suite v2.1.5 (Clash Tolerance, Approval, Analyser, Parameter Checker, Viewpoint Comments, Hide By Category) and the Revit Tools suite v1.4.1 (Clash and Shared Parameters, Warning Remover, Workset Assigner, Link Loader, Model Health Check), each with a changelog and user guide.',
-      'Build BIM-Q Central, an APS web platform that tracks model-sharing compliance and issue progress per trade in ACC, and AddinHub, a control board and PC agent that deploys, rolls back and monitors the add-ins by user or office.',
+      'Built and deployed BIM-Q Central, an APS web platform that tracks model-sharing compliance and issue progress per trade in ACC, and am building AddinHub, a control board and PC agent that deploys, rolls back and monitors the add-ins by user or office.',
       'Built an ACC to Microsoft Fabric data pipeline (APS Model Derivative, OneLake/Delta tables) feeding Power BI model and data quality reporting; published open-source tools on GitHub: NVClashAnalytics, RevitActiveQualityMonitor and SheetForge.',
       'Apply AI tools and scripting to turn repetitive BIM workflows into reusable applications.',
     ],

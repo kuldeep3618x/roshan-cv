@@ -205,7 +205,7 @@ export default function CommandCenter() {
   return (
     <section className="section section--alt" id="bim-q-central">
       <div className="container">
-        <SectionHead kicker="In development" title="A glimpse of BIM-Q Central" />
+        <SectionHead kicker="The platform" title="A glimpse of BIM-Q Central" />
         <p className="muted tools__intro">
           One web app on Autodesk Platform Services that brings delivery dashboards and the add-in control board into a
           single place. Click through the tabs; everything here is sample data.

@@ -27,7 +27,7 @@ export default function Portfolio() {
                       <strong>{t.name}</strong>
                     </div>
                   )}
-                  <span className={`badge badge--${t.status === 'Built' ? 'built' : 'wip'}`}>{t.status}</span>
+                  <span className={`badge badge--${['Built', 'Deployed'].includes(t.status) ? 'built' : 'wip'}`}>{t.status}</span>
                 </div>
                 <div className="feat__body">
                   <p className="feat__kind">

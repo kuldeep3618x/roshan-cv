@@ -47,7 +47,7 @@ export default function ToolPage({ slug }) {
           <h1 className="tool__title">{tool.name}</h1>
           <p className="tool__tagline">{tool.tagline}</p>
           <div className="tool__meta">
-            <span className={`badge badge--${tool.status === 'Built' ? 'built' : 'wip'}`}>{tool.status}</span>
+            <span className={`badge badge--${['Built', 'Deployed'].includes(tool.status) ? 'built' : 'wip'}`}>{tool.status}</span>
             {tool.version && (
               <span className="badge badge--ver">
                 {tool.version}
