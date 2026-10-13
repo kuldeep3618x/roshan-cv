@@ -5,6 +5,16 @@ import WorksetAssigner from './pages/WorksetAssigner.jsx';
 import FabricBridge from './pages/FabricBridge.jsx';
 import HealthCheck from './pages/HealthCheck.jsx';
 import MidpTidp from './pages/MidpTidp.jsx';
+import ClashApproval from './pages/ClashApproval.jsx';
+import ParameterChecker from './pages/ParameterChecker.jsx';
+import ViewpointComments from './pages/ViewpointComments.jsx';
+import HideByCategory from './pages/HideByCategory.jsx';
+import ClashParameters from './pages/ClashParameters.jsx';
+import SharedParameters from './pages/SharedParameters.jsx';
+import WarningRemover from './pages/WarningRemover.jsx';
+import LinkLoader from './pages/LinkLoader.jsx';
+import RevitModelHealth from './pages/RevitModelHealth.jsx';
+import ParameterUpdater from './pages/ParameterUpdater.jsx';
 import Tour, { TOURS } from './Tour.jsx';
 
 const PAGES = [
@@ -14,10 +24,20 @@ const PAGES = [
   { n: '04', t: 'ACC to Fabric', k: 'APS web app', C: FabricBridge },
   { n: '05', t: 'Model health', k: 'APS web app', C: HealthCheck },
   { n: '06', t: 'MIDP / TIDP', k: 'APS web app', C: MidpTidp },
+  { n: '11', t: 'Clash approval', k: 'Navisworks add-in tool', C: ClashApproval },
+  { n: '12', t: 'Parameter checker', k: 'Navisworks add-in tool', C: ParameterChecker },
+  { n: '13', t: 'Viewpoint comments', k: 'Navisworks add-in tool', C: ViewpointComments },
+  { n: '14', t: 'Hide by category', k: 'Navisworks add-in tool', C: HideByCategory },
+  { n: '15', t: 'Clash parameters', k: 'Revit add-in tool', C: ClashParameters },
+  { n: '16', t: 'Shared parameters', k: 'Revit add-in tool', C: SharedParameters },
+  { n: '17', t: 'Warning remover', k: 'Revit add-in tool', C: WarningRemover },
+  { n: '18', t: 'Link loader', k: 'Revit add-in tool', C: LinkLoader },
+  { n: '19', t: 'Model health (Revit)', k: 'Revit add-in tool', C: RevitModelHealth },
+  { n: '20', t: 'Parameter updater', k: 'Revit add-in tool', C: ParameterUpdater },
 ];
 
 const fromHash = () => {
-  const m = window.location.hash.match(/#\/(\d)/);
+  const m = window.location.hash.match(/#\/(\d+)/);
   const i = m ? Number(m[1]) - 1 : 0;
   return i >= 0 && i < PAGES.length ? i : 0;
 };

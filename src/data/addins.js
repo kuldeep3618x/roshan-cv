@@ -8,13 +8,15 @@
 
 export const suiteChildren = {
   'navisworks-tools-suite': ['clash-tolerance', 'clash-approval', 'clash-analyser', 'parameter-checker', 'viewpoint-comments', 'hide-by-category'],
-  'revit-tools-suite': ['clash-parameters', 'shared-parameters', 'warning-remover', 'workset-assigner', 'link-loader', 'revit-model-health-check'],
+  'revit-tools-suite': ['clash-parameters', 'shared-parameters', 'warning-remover', 'workset-assigner', 'link-loader', 'revit-model-health-check', 'parameter-updater'],
 };
 
 export const addins = [
   /* ============================================================ NAVISWORKS */
   {
     slug: 'clash-approval',
+    demo: 7,
+    demoHint: 'Click a status tile, select rows, then Approve Selected and Load Asset Info.',
     n: '11',
     name: 'Clash Approval',
     kind: 'Navisworks add-in tool',
@@ -66,6 +68,8 @@ export const addins = [
 
   {
     slug: 'parameter-checker',
+    demo: 8,
+    demoHint: 'Untick a file, add a parameter name, then Run Parameter Check.',
     n: '12',
     name: 'Parameter Checker',
     kind: 'Navisworks add-in tool',
@@ -118,6 +122,8 @@ export const addins = [
 
   {
     slug: 'viewpoint-comments',
+    demo: 9,
+    demoHint: 'Select viewpoints, add a comment, then try an export.',
     n: '13',
     name: 'Viewpoint Comments',
     kind: 'Navisworks add-in tool',
@@ -168,6 +174,8 @@ export const addins = [
 
   {
     slug: 'hide-by-category',
+    demo: 10,
+    demoHint: 'Select categories and Hide Selected, then try Roofs.',
     n: '14',
     name: 'Hide By Category',
     kind: 'Navisworks add-in tool',
@@ -218,6 +226,8 @@ export const addins = [
   /* ============================================================ REVIT */
   {
     slug: 'clash-parameters',
+    demo: 11,
+    demoHint: 'On Assign Values, tick a category and Apply, then watch the dashboard.',
     n: '15',
     name: 'Clash Parameters',
     kind: 'Revit add-in tool',
@@ -268,6 +278,8 @@ export const addins = [
 
   {
     slug: 'shared-parameters',
+    demo: 12,
+    demoHint: 'Click Preview, untick a row, then Apply Checked.',
     n: '16',
     name: 'Shared Parameters',
     kind: 'Revit add-in tool',
@@ -318,6 +330,8 @@ export const addins = [
 
   {
     slug: 'warning-remover',
+    demo: 13,
+    demoHint: 'Tick duplicates, Preview Change, then Resolve Duplicates.',
     n: '17',
     name: 'Warning Remover',
     kind: 'Revit add-in tool',
@@ -371,6 +385,8 @@ export const addins = [
 
   {
     slug: 'link-loader',
+    demo: 14,
+    demoHint: 'Tick Revit Selection, then Unload Checked.',
     n: '18',
     name: 'Link Loader',
     kind: 'Revit add-in tool',
@@ -421,6 +437,8 @@ export const addins = [
 
   {
     slug: 'revit-model-health-check',
+    demo: 15,
+    demoHint: 'Run the health check, then Import Settings and run it again.',
     n: '19',
     name: 'Model Health Check (Revit add-in)',
     kind: 'Revit add-in tool',
@@ -468,6 +486,57 @@ export const addins = [
       { t: 'Not applicable is not a failure', d: 'A config-compared test with nothing configured reports Not applicable with a message, so a missing standard is visible instead of looking like a pass.' },
       { t: 'Attestations stay with people', d: 'Judgement items are never evaluated by the tool. They appear in the report as a checklist for a reviewer to sign off.' },
       { t: 'One standard, shared', d: 'Settings export to a file that can sit with the project documents, so everyone audits against the same standard. The batch cloud version on the Cloud Model Health Check page covers many ACC models at once.' },
+    ],
+  },
+  {
+    slug: 'parameter-updater',
+    n: '20',
+    name: 'Parameter Updater',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'In progress',
+    version: 'Revit Tools Suite · planned for the next release',
+    demo: 16,
+    demoHint: 'Validate & Preview, edit a formula, Apply, then check the read-back.',
+    stack: ['C#', 'Revit API', 'WPF', 'Excel mapping workbook'],
+    tagline: 'Update Type and Instance parameter values from an Excel mapping workbook, with formulas for asset codes, a preview and a read-back check.',
+    problem:
+      'Asset and classification values are typed into elements by hand or pasted from spreadsheets, with no check that they landed, so models and registers drift apart.',
+    outcome: [
+      'A mapping workbook with Category, Family, Type, Scope, Parameter and Value; the workbook is the only authority and nothing is hard-coded.',
+      'Values that start with = are formulas, for example =AST-{Level}-{Type}-{Seq:000}, using any parameter name plus Category, Family, Type, Level, Id and a per-row counter.',
+      'Validate and preview first, then apply as one undo step.',
+      'Every value is read back to verify it, and a QA/QC report is exported to Excel.',
+    ],
+    diagram: {
+      cols: 3,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM manager', sub: 'Asset data owner', col: 0, row: 0, kind: 'actor', desc: 'Owns the asset code rules and the mapping workbook.' },
+        { id: 'win', label: 'Parameter Updater', sub: 'Validate, preview, apply', col: 1, row: 0, kind: 'app', desc: 'Reads the workbook, matches rows to elements and shows what would be written before anything changes.' },
+        { id: 'api', label: 'Revit API', sub: 'Type and instance parameters', col: 2, row: 0, kind: 'service', desc: 'Values are written inside a single transaction and read back afterwards.' },
+        { id: 'sheet', label: 'Mapping workbook', sub: 'Category, Family, Type, Scope, Parameter, Value', col: 1, row: 1, kind: 'data', desc: 'The only authority for values and formulas.' },
+        { id: 'qa', label: 'QA/QC report', sub: 'Excel', col: 2, row: 1, kind: 'data', desc: 'What was written and what was read back, per element and parameter.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'sheet', to: 'win', label: 'rules' },
+        { from: 'api', to: 'qa', label: 'verify' },
+      ],
+    },
+    steps: [
+      { title: 'Write the mapping', text: 'Each row says which category, family and type, whether it is a type or instance parameter, which parameter, and the value or formula.', nodes: ['user', 'sheet', 'win'], edges: [0, 2] },
+      { title: 'Validate and preview', text: 'The tool matches rows to elements and evaluates every formula, listing the value each element would receive. Nothing is written yet.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Apply as one undo step', text: 'The checked values are written together, so one undo reverts the whole run.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Read every value back', text: 'After the write, each parameter is read again and compared with what was intended.', nodes: ['api', 'win'], edges: [1] },
+      { title: 'Export the QA/QC report', text: 'The result of every element and parameter goes to Excel as a record of the update.', nodes: ['api', 'qa'], edges: [3] },
+    ],
+    decisions: [
+      { t: 'The workbook is the only authority', d: 'Nothing is hard-coded in the add-in, so a change to a rule is a change to a spreadsheet, not a new build.' },
+      { t: 'Formulas for asset codes', d: 'A value starting with = is a formula using any parameter name plus Category, Family, Type, Level, Id and a per-row counter, so codes are generated consistently instead of typed.' },
+      { t: 'Verify instead of assuming', d: 'Every written value is read back and compared, so a silent failure shows up in the report instead of in the model six weeks later.' },
+      { t: 'Marked as in progress', d: 'This tool is not yet part of a released suite version. It is planned for the next Revit Tools Suite release.' },
     ],
   },
 ];
