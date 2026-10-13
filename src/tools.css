@@ -164,3 +164,6 @@
 .suitelist__items a:hover { background: var(--bg-alt); }
 .suitelist__items strong { color: var(--heading); }
 .suitelist__items span { font-size: 0.86rem; }
+
+/* flat tool list: plain (image-less) cards are shorter */
+.feat__img--plain { aspect-ratio: 16 / 6.5; }

@@ -1,5 +1,8 @@
 import { portfolio, toolUsage, openSource } from '../data/cv.js';
-import { tools, suiteChildren } from '../data/tools.js';
+import { tools } from '../data/tools.js';
+
+// One flat list, in numeric order: the original tools, the two suites, the platform, then each individual add-in.
+const ORDERED = [...tools].sort((a, b) => a.n.localeCompare(b.n));
 import { toolHref } from '../router.js';
 import Reveal from './Reveal.jsx';
 import SectionHead from './SectionHead.jsx';
@@ -15,7 +18,7 @@ export default function Portfolio() {
         </p>
 
         <div className="grid grid--2">
-          {tools.filter((t) => !t.suite).map((t, i) => (
+          {ORDERED.map((t, i) => (
             <Reveal key={t.slug} className="card feat" delay={(i % 2) * 80}>
               <a className="feat__link" href={toolHref(t.slug)}>
                 <div className={`feat__img ${t.image ? '' : 'feat__img--plain'}`}>
@@ -23,7 +26,7 @@ export default function Portfolio() {
                     <img src={t.image} alt="" width="1600" height="900" loading="lazy" />
                   ) : (
                     <div className="feat__plain" aria-hidden="true">
-                      <span>{t.version || t.n}</span>
+                      <span>{t.suite ? t.n : t.version || t.n}</span>
                       <strong>{t.name}</strong>
                     </div>
                   )}
@@ -32,7 +35,7 @@ export default function Portfolio() {
                 <div className="feat__body">
                   <p className="feat__kind">
                     {t.n} · {t.kind}
-                    {t.version ? ` · ${t.version}` : ''}
+                    {t.version && !t.suite ? ` · ${t.version}` : ''}
                   </p>
                   <h3>{t.name}</h3>
                   <p className="muted">{t.tagline}</p>
@@ -48,31 +51,6 @@ export default function Portfolio() {
               </a>
             </Reveal>
           ))}
-        </div>
-
-        <h3 className="tools__more">Inside the add-in suites</h3>
-        <div className="grid grid--2">
-          {Object.entries(suiteChildren).map(([suiteSlug, slugs]) => {
-            const suite = tools.find((t) => t.slug === suiteSlug);
-            return (
-              <Reveal key={suiteSlug} className="card suitelist">
-                <h3>{suite.name}</h3>
-                <ul className="suitelist__items">
-                  {slugs.map((s) => {
-                    const t = tools.find((x) => x.slug === s);
-                    return t ? (
-                      <li key={s}>
-                        <a href={toolHref(s)}>
-                          <strong>{t.name}</strong>
-                          <span className="muted">{t.tagline}</span>
-                        </a>
-                      </li>
-                    ) : null;
-                  })}
-                </ul>
-              </Reveal>
-            );
-          })}
         </div>
 
         <h3 className="tools__more">Open source on GitHub</h3>
