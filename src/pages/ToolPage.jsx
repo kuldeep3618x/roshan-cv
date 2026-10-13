@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { tools, toolBySlug } from '../data/tools.js';
+import { tools, toolBySlug, suiteChildren, suiteOf } from '../data/tools.js';
 import { toolHref } from '../router.js';
 import Architecture from '../components/Architecture.jsx';
 import DemoFrame from '../components/DemoFrame.jsx';
@@ -33,6 +33,8 @@ export default function ToolPage({ slug }) {
   const i = tools.findIndex((t) => t.slug === slug);
   const prev = tools[(i - 1 + tools.length) % tools.length];
   const next = tools[(i + 1) % tools.length];
+  const parent = suiteOf(slug) ? toolBySlug[suiteOf(slug)] : null;
+  const kids = (suiteChildren[slug] || []).map((s) => toolBySlug[s]).filter(Boolean);
 
   return (
     <article className="tool">
@@ -46,6 +48,11 @@ export default function ToolPage({ slug }) {
           </p>
           <h1 className="tool__title">{tool.name}</h1>
           <p className="tool__tagline">{tool.tagline}</p>
+          {parent && (
+            <p className="tool__suite">
+              Part of <a href={toolHref(parent.slug)}>{parent.name}</a>
+            </p>
+          )}
           <div className="tool__meta">
             <span className={`badge badge--${['Built', 'Deployed'].includes(tool.status) ? 'built' : 'wip'}`}>{tool.status}</span>
             {tool.version && (
@@ -93,6 +100,28 @@ export default function ToolPage({ slug }) {
           </Reveal>
         </div>
       </section>
+
+      {kids.length > 0 && (
+        <section className="section section--alt" id="suite-tools">
+          <div className="container">
+            <div className="section-head">
+              <p className="eyebrow">In this suite</p>
+              <h2>The individual tools</h2>
+            </div>
+            <div className="grid grid--3">
+              {kids.map((k, n) => (
+                <Reveal key={k.slug} className="card kid" delay={(n % 3) * 70}>
+                  <a className="kid__link" href={toolHref(k.slug)}>
+                    <h3>{k.name}</h3>
+                    <p className="muted">{k.tagline}</p>
+                    <span className="feat__cta">Architecture &amp; walkthrough →</span>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {tool.video && (
         <section className="section section--alt" id="video">

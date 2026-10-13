@@ -1,0 +1,473 @@
+// Individual add-in tools inside the Navisworks and Revit suites (pages #/tools/<slug>).
+// Facts come from the add-in user guides and changelogs. The tools that already have pages
+// (Clash Tolerance, Clash Analyser, Workset Assigner) are not repeated here.
+// Plain data only (no imports) so a build script can read it. No client names or OBMI branding.
+//
+// Diagram rule: only same-row neighbours and same-column neighbours are connected, so the site diagram
+// and the generated walkthrough video draw without lines crossing boxes.
+
+export const suiteChildren = {
+  'navisworks-tools-suite': ['clash-tolerance', 'clash-approval', 'clash-analyser', 'parameter-checker', 'viewpoint-comments', 'hide-by-category'],
+  'revit-tools-suite': ['clash-parameters', 'shared-parameters', 'warning-remover', 'workset-assigner', 'link-loader', 'revit-model-health-check'],
+};
+
+export const addins = [
+  /* ============================================================ NAVISWORKS */
+  {
+    slug: 'clash-approval',
+    n: '11',
+    name: 'Clash Approval',
+    kind: 'Navisworks add-in tool',
+    suite: 'navisworks-tools-suite',
+    status: 'Built',
+    version: 'Navisworks Tools Suite v2.1.5 · since v1.0.0',
+    stack: ['C#', '.NET Framework 4.8', 'WPF', 'Navisworks Clash API'],
+    tagline: 'Review clash results across every test in one grid, filter to what matters, and record approval decisions with comments.',
+    problem:
+      'Approving clashes means working test by test inside Clash Detective, with no single view of the results, no record of who approved what and when, and no easy way to take a review pass outside the model.',
+    outcome: [
+      'One grid of results across every test, under a status summary: New, Active, Reviewed, Approved, Resolved and Outstanding.',
+      'A filter on every column, including status, distance range and approval date.',
+      'Approve or resolve a selection, recording who and when, with comments you can add, edit or delete.',
+      'Optional Load Asset Info adds category, family, type, workset, element ID and source file for both clashing items.',
+      'CSV export and import, so a review pass can leave the model and its decisions come back.',
+    ],
+    diagram: {
+      cols: 3,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'Reviewer', sub: 'BIM coordinator', col: 0, row: 0, kind: 'actor', desc: 'Reviews outstanding clashes and records the decision.' },
+        { id: 'win', label: 'Review window', sub: 'Summary + results grid', col: 1, row: 0, kind: 'app', desc: 'A non-modal window: a status summary per test on top and a filterable results grid below.' },
+        { id: 'api', label: 'Navisworks Clash API', sub: 'Tests, results, comments', col: 2, row: 0, kind: 'service', desc: 'Clash Detective tests, results, statuses and comments in the active document.' },
+        { id: 'csv', label: 'CSV file', sub: 'Export and import', col: 1, row: 1, kind: 'data', desc: 'The filtered grid, plus asset columns once they are loaded. Importing brings decisions and comments back into the model.' },
+        { id: 'asset', label: 'Asset info loader', sub: 'Opt-in, chunked', col: 2, row: 1, kind: 'app', desc: 'Resolves each clash item to its real element and reads its category, family, type, workset, element ID, source file and chosen parameters.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'win', to: 'csv', both: true, label: 'export / import' },
+        { from: 'api', to: 'asset', label: 'properties' },
+      ],
+    },
+    steps: [
+      { title: 'Read every test', text: 'The window lists every clash test with its status counts, read from the active document.', nodes: ['user', 'win', 'api'], edges: [0, 1] },
+      { title: 'Filter to what matters', text: 'Each column has its own filter: text, a status dropdown, a distance range and an approved-date text filter. Clear Filters resets them all at once.', nodes: ['win'], edges: [] },
+      { title: 'Add context on request', text: 'Load Asset Info reads the real element details for both items of every loaded result. It is opt-in and works in chunks with progress, because each item costs its own property lookup.', nodes: ['win', 'api', 'asset'], edges: [1, 3] },
+      { title: 'Approve, resolve, comment', text: 'Approve Selected or Resolve Selected records who approved and when. Comments on the selection can be added, edited or deleted.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Share the pass', text: 'Export the filtered grid to CSV, then import a returned file to bring decisions and comments back into the model.', nodes: ['win', 'csv'], edges: [2] },
+    ],
+    decisions: [
+      { t: 'Asset info is opt-in', d: 'Resolving every clash item to its element is a property lookup per item. It runs only on request, in chunks with progress, and clears when the loaded tests change.' },
+      { t: 'Resolve to the real element', d: 'A clash item often points at a generic geometry node. The tool climbs to the Revit element so category, type and workset are right, and falls back to a source-file lookup when the appended file is a merged composite.' },
+      { t: 'New columns go on the end', d: 'Asset columns are appended after the standard ones, so a CSV exported without asset info still imports exactly as before.' },
+      { t: 'Isolate that stays fast', d: 'Double-click isolates the clashing items with a tree walk and a temporary transparency override, after a hide through the model API froze Navisworks for 30+ minutes on a real model.' },
+    ],
+  },
+
+  {
+    slug: 'parameter-checker',
+    n: '12',
+    name: 'Parameter Checker',
+    kind: 'Navisworks add-in tool',
+    suite: 'navisworks-tools-suite',
+    status: 'Built',
+    version: 'Navisworks Tools Suite v2.1.5 · since v1.1.0',
+    stack: ['C#', '.NET Framework 4.8', 'WPF', 'Navisworks API', 'Excel export'],
+    tagline: 'Check required element parameters across every element in the chosen model files, not only the ones involved in a clash.',
+    problem:
+      'Clash coordination depends on tags such as a clash test code and zone being present on every element. Missing values are usually found only when a clash fails to group, long after the model was published.',
+    outcome: [
+      'Choose the required parameter names and which NWC or model files are in scope.',
+      'A dashboard of files and elements scanned, elements missing and files with gaps, with a missing-by-file chart per parameter.',
+      'A grid of every element missing at least one parameter, with category, family, type, workset and source files.',
+      'Double-click isolates the element in 3D. CSV and Excel exports are stamped with the date.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'Coordinator', sub: 'Model owner', col: 0, row: 0, kind: 'actor', desc: 'Runs the check before a model is published or federated.' },
+        { id: 'win', label: 'Checker window', sub: 'Parameters + file scope', col: 1, row: 0, kind: 'app', desc: 'Required parameter names, the files in scope and the run controls, with a dashboard above the results.' },
+        { id: 'api', label: 'Model tree', sub: 'Elements and properties', col: 2, row: 0, kind: 'service', desc: 'Every element in the chosen files is enumerated and its properties read through the Navisworks API.' },
+        { id: 'idx', label: 'Document-wide search', sub: 'Optional fallback', col: 3, row: 0, kind: 'service', desc: 'Navisworks’ own native search, run once per required parameter to find values stored on a different tree node.' },
+        { id: 'grid', label: 'Gap report', sub: 'By file and by element', col: 1, row: 1, kind: 'data', desc: 'Dashboard tiles, the missing-by-file chart and the element grid with highlighted gaps.' },
+        { id: 'exp', label: 'CSV / Excel', sub: 'Dated exports', col: 2, row: 1, kind: 'data', desc: 'The element grid and the by-file dashboard each export on their own.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'api', to: 'idx', both: true },
+        { from: 'win', to: 'grid', both: true },
+        { from: 'grid', to: 'exp' },
+      ],
+    },
+    steps: [
+      { title: 'Choose what to check', text: 'Add the required parameter names (two are pre-filled) and pick which files are in scope. All appended files are checked by default.', nodes: ['user', 'win'], edges: [0] },
+      { title: 'Read every element', text: 'Each element in scope is enumerated and its category, family, type, workset and parameters are read from the real element.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Search the document as a last resort', text: 'A required value stored on a different tree node can be missed. An optional native search indexes each parameter across the document so it is not reported missing by mistake. It can be switched off for speed.', nodes: ['api', 'idx'], edges: [2] },
+      { title: 'Review the gaps', text: 'The dashboard shows files and elements scanned and missing, by file and by parameter. The grid lists each element with the missing values highlighted.', nodes: ['win', 'grid'], edges: [3] },
+      { title: 'Isolate and export', text: 'Double-click a row to isolate the element in 3D. Export the grid and the by-file dashboard to CSV or Excel.', nodes: ['grid', 'exp'], edges: [4] },
+    ],
+    decisions: [
+      { t: 'Check every element, not just clash items', d: 'A clash report only sees elements that clashed. Scanning whole files finds gaps before they cause a failed grouping.' },
+      { t: 'Skip a bad element, keep going', d: 'Navisworks can release an element’s data in the middle of a scan. Each element is now handled on its own, logged and skipped, so one failure no longer stops the report part-way.' },
+      { t: 'A switch for the slow search', d: 'The native document-wide search reports no progress and can take minutes on a very large model. It is on by default to avoid false “missing” results and can be turned off for a much faster run.' },
+      { t: 'Row diagnostics', d: 'Export Row Diagnostics dumps one element’s raw property structure to a text file, to see exactly which property names an unfamiliar export uses.' },
+    ],
+  },
+
+  {
+    slug: 'viewpoint-comments',
+    n: '13',
+    name: 'Viewpoint Comments',
+    kind: 'Navisworks add-in tool',
+    suite: 'navisworks-tools-suite',
+    status: 'Built',
+    version: 'Navisworks Tools Suite v2.1.5 · since v1.0.0',
+    stack: ['C#', '.NET Framework 4.8', 'WPF', 'Navisworks API', 'HTML report'],
+    tagline: 'Review and manage the comments on every saved viewpoint in one grid, and export them as CSV, Excel, XML or an HTML report.',
+    problem:
+      'Review comments live on saved viewpoints, but the native panel makes you open them one at a time, and getting them out for a report means copying by hand.',
+    outcome: [
+      'A grid of every saved viewpoint with its folder, comment count and latest comment.',
+      'Add, edit and delete comments without hunting through the Saved Viewpoints panel.',
+      'Comments to CSV or Excel, one row per comment, with author, date and status.',
+      'Full viewpoint definitions to XML, and an HTML report with a screenshot per viewpoint.',
+    ],
+    diagram: {
+      cols: 3,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'Reviewer', sub: 'Design review', col: 0, row: 0, kind: 'actor', desc: 'Works through the saved viewpoints left from a review session.' },
+        { id: 'win', label: 'Viewpoint grid', sub: 'Folder, name, comments', col: 1, row: 0, kind: 'app', desc: 'Lists every saved viewpoint with its comment count and most recent comment.' },
+        { id: 'api', label: 'Saved viewpoints', sub: 'Navisworks API', col: 2, row: 0, kind: 'service', desc: 'Viewpoints, their cameras and their comments in the active document.' },
+        { id: 'exp', label: 'Exports', sub: 'CSV, Excel, XML, HTML', col: 1, row: 1, kind: 'data', desc: 'Four export buttons, all acting on the viewpoints you selected.' },
+        { id: 'shot', label: 'Screenshot renderer', sub: 'One per camera', col: 2, row: 1, kind: 'app', desc: 'Renders each selected viewpoint’s camera for the HTML report.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'win', to: 'exp' },
+        { from: 'shot', to: 'exp', label: 'images' },
+      ],
+    },
+    steps: [
+      { title: 'List every viewpoint', text: 'The grid shows each viewpoint’s folder, name, comment count and last comment. Refresh reloads it if viewpoints changed elsewhere.', nodes: ['user', 'win', 'api'], edges: [0, 1] },
+      { title: 'Manage the comments', text: 'Select a viewpoint and use Add Comment, Edit Selected or Delete Selected.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Export the comments', text: 'Export Selected CSV or Excel writes one row per comment. A viewpoint with no comments still gets a row so it is not dropped.', nodes: ['win', 'exp'], edges: [2] },
+      { title: 'Archive the definitions', text: 'Export Viewpoints writes camera position and rotation, projection, clipping planes and comments to XML in this add-in’s own format.', nodes: ['win', 'exp'], edges: [2] },
+      { title: 'Build the HTML report', text: 'Export Viewpoints Report renders a screenshot per selected viewpoint and writes one HTML file with folder, name and comments, opened in your browser.', nodes: ['shot', 'exp'], edges: [3] },
+    ],
+    decisions: [
+      { t: 'Exports act on the selection', d: 'Select the viewpoints you want first. Every export works on that selection instead of the full list, so a report can cover one review pass.' },
+      { t: 'No viewpoint is dropped', d: 'A viewpoint without comments still produces a row, so counts in the export match the model.' },
+      { t: 'Honest about the XML', d: 'The definitions export uses the add-in’s own XML shape. It is for archive and review, not guaranteed to re-import through Navisworks’ Import Viewpoints.' },
+      { t: 'Show progress on slow work', d: 'Capturing a screenshot per viewpoint is noticeably slower than the other exports on a large selection, so the status line tracks it.' },
+    ],
+  },
+
+  {
+    slug: 'hide-by-category',
+    n: '14',
+    name: 'Hide By Category',
+    kind: 'Navisworks add-in tool',
+    suite: 'navisworks-tools-suite',
+    status: 'Built',
+    version: 'Navisworks Tools Suite v2.1.5 · since v1.2.0',
+    stack: ['C#', '.NET Framework 4.8', 'WPF', 'Navisworks native search'],
+    tagline: 'Hide or show standard Revit categories across every loaded model in one pass, without building a search or selection set.',
+    problem:
+      'Reviewing one discipline in a federated model means building searches or selection sets for each category to hide, then rebuilding them in the next session.',
+    outcome: [
+      'A fixed menu of standard Revit categories, such as Walls, Doors, Windows and Furniture, with a filter box.',
+      'Hide Selected and Show Selected, or Hide All and Show All.',
+      'Works across every loaded model at once.',
+      'A Last Result column says what happened, including when a category is not in any loaded model.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'Reviewer', sub: 'Discipline review', col: 0, row: 0, kind: 'actor', desc: 'Wants to see one discipline without the noise of the rest.' },
+        { id: 'win', label: 'Category menu', sub: 'Fixed list, filterable', col: 1, row: 0, kind: 'app', desc: 'A fixed list of standard Revit categories. Nothing is looked up until you act on a selection.' },
+        { id: 'search', label: 'Native search', sub: 'Run on demand', col: 2, row: 0, kind: 'service', desc: 'Each selected category is resolved when you act, through Navisworks’ own search.' },
+        { id: 'models', label: 'Loaded models', sub: 'All appended files', col: 3, row: 0, kind: 'data', desc: 'Matching elements are hidden or shown in every loaded model.' },
+        { id: 'result', label: 'Last Result', sub: 'Per category', col: 1, row: 1, kind: 'app', desc: 'The outcome of the latest Hide or Show for each category.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'search', label: 'resolve' },
+        { from: 'search', to: 'models' },
+        { from: 'win', to: 'result', both: true },
+      ],
+    },
+    steps: [
+      { title: 'Pick categories', text: 'Filter the list if you need to, then multi-select the categories with click and Ctrl or Shift.', nodes: ['user', 'win'], edges: [0] },
+      { title: 'Resolve on demand', text: 'Nothing is scanned up front. When you click, each selected category is resolved through Navisworks’ own native search.', nodes: ['win', 'search'], edges: [1] },
+      { title: 'Hide or show everywhere', text: 'Every element in the selected categories is hidden or revealed across all loaded models in one pass.', nodes: ['search', 'models'], edges: [2] },
+      { title: 'Read the result', text: 'Each row’s Last Result records the outcome. A category that is not in any loaded model is reported there instead of silently doing nothing.', nodes: ['win', 'result'], edges: [3] },
+    ],
+    decisions: [
+      { t: 'Search on demand, not a model scan', d: 'Scanning every loaded model up front would be slow on a federated file. The menu is fixed and each category is searched only when you use it.' },
+      { t: 'Report what was not found', d: 'If a selected category is not in any loaded model, the row says so, so a typo or a missing discipline is not mistaken for success.' },
+      { t: 'Hide All and Show All', d: 'These act on the whole list regardless of selection, for a quick reset between review passes.' },
+      { t: 'Non-modal like the other tools', d: 'The window stays open beside the 3D view, so you can orbit and select while you hide and show.' },
+    ],
+  },
+
+  /* ============================================================ REVIT */
+  {
+    slug: 'clash-parameters',
+    n: '15',
+    name: 'Clash Parameters',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'Built',
+    version: 'Revit Tools Suite v1.4.1 · since v1.0.0',
+    stack: ['C#', 'Revit API', 'WPF', 'Excel / CSV'],
+    tagline: 'See how complete the Clash Code and Clash Zone parameters are, fill them in bulk, map codes from a clash matrix and round-trip values through Excel.',
+    problem:
+      'Clash grouping depends on a clash test code and a zone being present on every element. Filling them by hand is tedious, easy to get wrong and hard to audit.',
+    outcome: [
+      'A dashboard of elements in scope, missing code, missing zone and percent complete, broken down by category.',
+      'A coverage list of elements that lack the parameter entirely, which usually means it is not bound to that category.',
+      'Assign one value to many elements by category, current selection or preview rows.',
+      'Auto-map codes from a clash matrix by trade, and edit values in Excel or CSV and import them back.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM manager', sub: 'Owns the standard', col: 0, row: 0, kind: 'actor', desc: 'Sets the clash tagging standard for the project.' },
+        { id: 'win', label: 'Clash Parameters', sub: 'Scope + two parameters', col: 1, row: 0, kind: 'app', desc: 'Scope is the whole model or the active view. Two existing parameters are chosen for code and zone.' },
+        { id: 'api', label: 'Revit API', sub: 'Elements and parameters', col: 2, row: 0, kind: 'service', desc: 'Reads and writes only the two chosen parameters, inside one transaction per apply.' },
+        { id: 'matrix', label: 'Clash matrix', sub: '.csv / .xlsx code and category pairs', col: 1, row: 1, kind: 'data', desc: 'Repeating column pairs of code and category name per discipline. The discipline comes from the code suffix.' },
+        { id: 'xl', label: 'Excel / CSV', sub: 'Round trip by UniqueId', col: 2, row: 1, kind: 'data', desc: 'Every element in scope with ElementId, UniqueId, category, workset, family, type, level and the two parameters.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'win', to: 'matrix', label: 'map' },
+        { from: 'api', to: 'xl', both: true, label: 'export / import' },
+      ],
+    },
+    steps: [
+      { title: 'Set scope and parameters', text: 'Choose the whole model or the active view, then pick the Clash Code and Clash Zone parameters from the names found on elements in scope.', nodes: ['user', 'win'], edges: [0] },
+      { title: 'See what is missing', text: 'The dashboard shows missing code, missing zone and percent complete by category. The coverage tab lists elements where the parameter is not there at all.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Assign in bulk', text: 'Pick targets by category, current selection or preview rows, type a value and apply. It is one undo step.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Map codes from the matrix', text: 'Load a reference clash matrix, choose the trade, accept or change the suggested code per category and apply the mapping to scoped elements.', nodes: ['win', 'matrix'], edges: [2] },
+      { title: 'Round-trip through Excel', text: 'Export every element in scope, edit the two parameter columns, then import. Rows are matched by UniqueId and blank cells are ignored.', nodes: ['api', 'xl'], edges: [3] },
+    ],
+    decisions: [
+      { t: 'It never creates parameters', d: 'The two parameters must already exist and be bound to the categories. The coverage tab shows where they are not, so the fix happens in Revit, not by surprise.' },
+      { t: 'Blank cells never clear values', d: 'An import fills values in but cannot wipe existing ones, so a half-finished spreadsheet cannot damage the model.' },
+      { t: 'Match by UniqueId', d: 'Rows are matched on UniqueId, and the preview marks each as Matched or Not found before anything is applied.' },
+      { t: 'One trade at a time', d: 'Code mapping uses only the chosen trade’s category-to-code pairs, which avoids ambiguity when a category name appears under several disciplines.' },
+    ],
+  },
+
+  {
+    slug: 'shared-parameters',
+    n: '16',
+    name: 'Shared Parameters',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'Built',
+    version: 'Revit Tools Suite v1.4.1 · since v1.4.0',
+    stack: ['C#', 'Revit API', 'WPF', 'Excel rule sheets'],
+    tagline: 'Add shared parameters to a model from a shared parameter file, following rules kept in an Excel sheet, with a preview before anything changes.',
+    problem:
+      'Adding the same shared parameters to every project by hand in Project Parameters is slow, and binding, group and categories drift between models.',
+    outcome: [
+      'Rules in Excel: parameter, binding (type or instance), group and categories, with an optional definition group and varies-by-group.',
+      'A preview with a result for every rule before anything is written.',
+      'One undoable apply that adds new parameters and extends existing ones with missing categories.',
+      'Export Template writes every definition in your shared parameter file to a starting sheet.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM manager', sub: 'Project setup', col: 0, row: 0, kind: 'actor', desc: 'Sets the same parameters up on every new project.' },
+        { id: 'win', label: 'Shared Parameters', sub: 'Preview and apply', col: 1, row: 0, kind: 'app', desc: 'Chooses the shared parameter file and the Excel rules, previews, and applies the ticked rows.' },
+        { id: 'api', label: 'Revit document', sub: 'Project parameter bindings', col: 2, row: 0, kind: 'service', desc: 'Parameters are added or extended in a single transaction.' },
+        { id: 'spf', label: 'Shared parameter file', sub: '.txt definitions', col: 0, row: 1, kind: 'data', desc: 'The definitions. Names in the rule sheet must match it.' },
+        { id: 'sheet', label: 'Excel rule sheet', sub: 'Parameter, Binding, Group, Categories', col: 1, row: 1, kind: 'data', desc: 'Several rows with the same parameter are merged into one rule.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'spf', to: 'sheet', label: 'template' },
+        { from: 'sheet', to: 'win', label: 'rules' },
+      ],
+    },
+    steps: [
+      { title: 'Export a rule template', text: 'With a shared parameter file chosen, Export Template writes every definition to an Excel sheet with binding Instance, group Data and empty categories.', nodes: ['spf', 'sheet'], edges: [2] },
+      { title: 'Fill in the rules', text: 'Set binding, group and categories, delete the rows you do not want, and keep it as the project’s rule sheet.', nodes: ['sheet', 'win'], edges: [3] },
+      { title: 'Preview', text: 'Each rule gets a result: Will add, Will add N categories to the existing parameter, Already bound, Not in shared parameter file, or left alone where the binding disagrees.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Apply as one transaction', text: 'The checked rules are applied together. The status line reports what was added, what was extended and anything that failed with the reason.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Confirm', text: 'Press Ctrl+Z to undo, or preview again to confirm nothing is left to do. Revit’s own shared parameter file setting is restored after every action.', nodes: ['win'], edges: [] },
+    ],
+    decisions: [
+      { t: 'Rules merge by parameter', d: 'Two rows for the same parameter become one rule bound to the union of the categories, so the sheet can be written in whatever order is natural.' },
+      { t: 'Never remove or rename', d: 'Existing parameters are only extended with categories. Where the sheet disagrees with the model on binding, the parameter is reported and left alone.' },
+      { t: 'Revit’s settings are put back', d: 'The shared parameter file Revit itself uses is restored after every preview, export and apply, so the tool never changes which file Revit uses.' },
+      { t: 'Preview changes nothing', d: 'Every result is visible, with row tick-boxes, before a single parameter is written.' },
+    ],
+  },
+
+  {
+    slug: 'warning-remover',
+    n: '17',
+    name: 'Warning Remover',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'Built',
+    version: 'Revit Tools Suite v1.4.1 · since v1.0.0',
+    stack: ['C#', 'Revit API', 'WPF', 'CSV / Excel / JSON export'],
+    tagline: 'Collect the model’s Revit warnings, group them, and fix the ones that can be fixed safely, always on the rows you ticked.',
+    problem:
+      'Revit warnings pile up. Fixing them by hand is slow and risky, because some of the fixes Revit offers delete elements or ungroup them.',
+    outcome: [
+      'A dashboard of all, critical, fixed, ignored and manual-review warnings after each collection.',
+      'Filter chips for category, severity and the tool that fixes each warning, plus a search box.',
+      'Preview Change describes the plan in plain language and can show the elements in a temporary 3D view.',
+      'Targeted fixes for duplicates, joins, overlaps, constraints, off-axis sketches and rooms, or review warning by warning.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM manager', sub: 'Model clean-up', col: 0, row: 0, kind: 'actor', desc: 'Cleans a model before a milestone or issue.' },
+        { id: 'win', label: 'Warning list', sub: 'Collect, filter, tick', col: 1, row: 0, kind: 'app', desc: 'Four numbered steps: Collect, Choose, Fix ticked, Export. The Fix by column names the exact button for each row.' },
+        { id: 'api', label: 'Revit API', sub: 'Warnings and elements', col: 2, row: 0, kind: 'service', desc: 'Current warnings and the elements involved, with each fix applied in its own transaction.' },
+        { id: 'exp', label: 'Reports', sub: 'CSV, Excel, JSON, summary', col: 0, row: 1, kind: 'data', desc: 'The warning list or the model-health summary, for reporting.' },
+        { id: 'plan', label: 'Preview plan', sub: 'Plain language, temporary 3D', col: 1, row: 1, kind: 'app', desc: 'What each fix will do for the ticked rows. The 3D view uses temporary isolate, so nothing is saved.' },
+        { id: 'fix', label: 'Resolve buttons', sub: 'One per warning kind', col: 2, row: 1, kind: 'app', desc: 'Duplicates, joins, overlaps, constraints, sketches, rooms and alignment, each acting only on ticked rows.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'win', to: 'plan' },
+        { from: 'plan', to: 'fix', label: 'confirm' },
+        { from: 'fix', to: 'api', label: 'one undo step' },
+        { from: 'exp', to: 'user', label: 'reports' },
+      ],
+    },
+    steps: [
+      { title: 'Collect', text: 'Collect Warnings reads the model’s current Revit warnings and lists them. Run it again after changing the model outside the tool.', nodes: ['user', 'win', 'api'], edges: [0, 1] },
+      { title: 'Filter and tick', text: 'Narrow the list with category, severity and fix-by chips or the search box, then tick the rows to fix. Shift+click ticks a range.', nodes: ['win'], edges: [] },
+      { title: 'Preview', text: 'Preview Change lists a plain-language plan per warning and can isolate the elements in a temporary 3D view.', nodes: ['win', 'plan'], edges: [2] },
+      { title: 'Resolve', text: 'The matching resolve button acts only on ticked rows. With confirmation on, review the list and choose Yes. Each action is one undo step.', nodes: ['plan', 'fix', 'api'], edges: [3, 4] },
+      { title: 'Review or report', text: 'Review One by One steps through warnings, shows each in 3D and fixes a single one. Export the list or the health summary for reporting.', nodes: ['exp', 'user'], edges: [5] },
+    ],
+    decisions: [
+      { t: 'It never deletes and never ungroups', d: 'Elements inside groups are skipped and counted. The tool never picks Revit’s “Delete Instance(s)” or “Ungroup” options.' },
+      { t: 'Errors roll back', d: 'If Revit raises an error during a fix, the change is rolled back and the warning stays, rather than leaving a half-fixed model.' },
+      { t: 'Only the rows you ticked', d: 'With nothing ticked, the resolve buttons do nothing. Filters only hide rows; they never change what is ticked.' },
+      { t: 'A plan you can read', d: 'The preview explains each fix in plain language, so a fix can be judged before it is applied.' },
+    ],
+  },
+
+  {
+    slug: 'link-loader',
+    n: '18',
+    name: 'Link Loader',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'Built',
+    version: 'Revit Tools Suite v1.4.1 · since v1.4.0',
+    stack: ['C#', 'Revit API', 'WPF'],
+    tagline: 'Load or unload many Revit links in one step, picked by name and status or by your current Revit selection.',
+    problem:
+      'Loading and unloading links one at a time through Manage Links is slow on a federated model with dozens of links, and “unload for me” has to be repeated link by link.',
+    outcome: [
+      'A tree of every link with its status (Loaded, Unloaded, Not found) and the number of instances, with nested links under their parent.',
+      'Filter by name and by status, or tick the links currently selected in Revit.',
+      'Load Checked and Unload Checked in one step.',
+      'An Unload for me option for workshared models, and a result line of changed, skipped and failed links.',
+    ],
+    diagram: {
+      cols: 3,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM coordinator', sub: 'Model set-up', col: 0, row: 0, kind: 'actor', desc: 'Prepares a model view with only the links needed for a task.' },
+        { id: 'win', label: 'Link tree', sub: 'Status, instances, ticks', col: 1, row: 0, kind: 'app', desc: 'Every link with its status. Nested links hang under their parent, as in Manage Links.' },
+        { id: 'api', label: 'Revit links', sub: 'Link types and instances', col: 2, row: 0, kind: 'service', desc: 'Load and unload are Revit link operations, applied per link.' },
+        { id: 'filt', label: 'Filters', sub: 'Name and status', col: 1, row: 1, kind: 'app', desc: 'A name filter and a status filter narrow the list. Check All ticks only what is shown.' },
+        { id: 'sel', label: 'Revit selection', sub: 'Link instances or types', col: 2, row: 1, kind: 'data', desc: 'The links currently selected in Revit can be ticked in one click.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'api', both: true },
+        { from: 'win', to: 'filt', both: true },
+        { from: 'sel', to: 'filt', label: 'tick' },
+      ],
+    },
+    steps: [
+      { title: 'Read every link', text: 'The tree lists each link with its status and instance count, with nested links under the link that contains them.', nodes: ['user', 'win', 'api'], edges: [0, 1] },
+      { title: 'Narrow the list', text: 'Type part of a name (for example a discipline code) or choose a status to show only matching links.', nodes: ['win', 'filt'], edges: [2] },
+      { title: 'Tick from your selection', text: 'Tick Revit Selection clears the ticks, then ticks the links selected in Revit and clears the filter so they are visible.', nodes: ['sel', 'filt'], edges: [3] },
+      { title: 'Load or unload', text: 'Load Checked or Unload Checked changes only links that are both ticked and shown. The Unload for me column chooses all users or only you.', nodes: ['win', 'api'], edges: [1] },
+      { title: 'Read the result', text: 'The status line reports links changed, links skipped because they were already in that state, and any failures with the reason.', nodes: ['win'], edges: [] },
+    ],
+    decisions: [
+      { t: 'Nested links follow their parent', d: 'A link inside another link is shown under its parent but cannot be ticked on its own, which matches how Revit treats it.' },
+      { t: 'Not part of undo', d: 'Loading and unloading are link operations, not model edits, so they are outside Ctrl+Z. The tool says so, and Load Checked brings links back.' },
+      { t: 'Unload for me is a choice', d: 'On a workshared model a link can be unloaded only for you. Those links show a distinct status so they are not confused with fully unloaded ones.' },
+      { t: 'Ticks survive a refresh', d: 'Refreshing after a load or unload keeps your ticks, so a second pass is quick.' },
+    ],
+  },
+
+  {
+    slug: 'revit-model-health-check',
+    n: '19',
+    name: 'Model Health Check (Revit add-in)',
+    kind: 'Revit add-in tool',
+    suite: 'revit-tools-suite',
+    status: 'Built',
+    version: 'Revit Tools Suite v1.4.1 · since v1.1.0',
+    stack: ['C#', '.NET 8', 'Revit API', 'WPF', 'Excel report'],
+    tagline: 'Audit the open model against a QA test catalog, discipline by discipline, with editable settings and an Excel report. Read-only.',
+    problem:
+      'Model health is checked ad hoc, against standards that live in documents, and the results are hard to compare between runs or between models.',
+    outcome: [
+      'General, Architectural, Structural, Mechanical and Electrical tests, each with its own run tick-box.',
+      'Automated tests need nothing; config-compared tests measure the model against your project standard.',
+      'A settings form and a JSON editor, with import and export so one standard can be shared by the team.',
+      'Results by status and an Excel report. It opens no transaction and never changes the model.',
+    ],
+    diagram: {
+      cols: 4,
+      rows: 2,
+      nodes: [
+        { id: 'user', label: 'BIM manager', sub: 'QA owner', col: 0, row: 0, kind: 'actor', desc: 'Audits a model before a milestone and tracks progress between runs.' },
+        { id: 'win', label: 'Tests and settings', sub: 'Three tabs', col: 1, row: 0, kind: 'app', desc: 'Disciplines and Tests, Test Settings and Results.' },
+        { id: 'cat', label: 'Test catalog', sub: 'Automated, config-compared, attestation', col: 2, row: 0, kind: 'app', desc: 'Automated tests are computed; config-compared tests are measured against settings; attestations are for a person to sign off.' },
+        { id: 'api', label: 'Revit document', sub: 'Read only', col: 3, row: 0, kind: 'service', desc: 'The catalog reads the open model. No transaction is opened.' },
+        { id: 'cfg', label: 'Settings file', sub: 'JSON, shareable', col: 1, row: 1, kind: 'data', desc: 'Naming conventions, workset rules, level names, parameter mappings and agreed values.' },
+        { id: 'xl', label: 'Excel report', sub: 'Per test, with checklist', col: 2, row: 1, kind: 'data', desc: 'Only the ticked tests and disciplines, plus the attestation checklist for those disciplines.' },
+      ],
+      edges: [
+        { from: 'user', to: 'win' },
+        { from: 'win', to: 'cat', label: 'run' },
+        { from: 'cat', to: 'api', label: 'read only' },
+        { from: 'cfg', to: 'win', label: 'standard' },
+        { from: 'cat', to: 'xl', label: 'report' },
+      ],
+    },
+    steps: [
+      { title: 'Load the project standard', text: 'Import a team settings file, or edit the form and JSON. Settings persist, so this is a one-time job per project standard.', nodes: ['cfg', 'win'], edges: [3] },
+      { title: 'Choose disciplines and tests', text: 'Tick the disciplines and the individual tests that apply. Shift+click switches a range on or off.', nodes: ['user', 'win'], edges: [0] },
+      { title: 'Run, read only', text: 'The catalog audits the open model without opening a transaction. Large models can take a while and Revit is busy until the run finishes.', nodes: ['win', 'cat', 'api'], edges: [1, 2] },
+      { title: 'Review by status', text: 'Each test ends as Pass, Fail, Needs review, Not applicable or Error, with an issue count and a message.', nodes: ['cat', 'win'], edges: [1] },
+      { title: 'Export', text: 'Export Excel writes a report next to the model with the ticked tests and the attestation checklist. Fix, re-run and export again to show progress.', nodes: ['cat', 'xl'], edges: [4] },
+    ],
+    decisions: [
+      { t: 'Read-only by design', d: 'It opens no transaction. Its only outputs are the results window, your saved settings and the Excel report you choose to export.' },
+      { t: 'Not applicable is not a failure', d: 'A config-compared test with nothing configured reports Not applicable with a message, so a missing standard is visible instead of looking like a pass.' },
+      { t: 'Attestations stay with people', d: 'Judgement items are never evaluated by the tool. They appear in the report as a checklist for a reviewer to sign off.' },
+      { t: 'One standard, shared', d: 'Settings export to a file that can sit with the project documents, so everyone audits against the same standard. The batch cloud version on the Cloud Model Health Check page covers many ACC models at once.' },
+    ],
+  },
+];

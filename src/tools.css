@@ -149,3 +149,18 @@
 .vid figcaption { margin-top: 0.6rem; color: var(--muted); font-size: 0.85rem; }
 .repo h3 { margin-bottom: 0.2rem; }
 .repo .feat__cta { display: inline-block; margin-top: 0.4rem; text-decoration: none; }
+
+/* ---- individual add-in tool pages ---- */
+.tool__suite { margin: -0.4rem 0 1rem; color: #c6d8ee; font-size: 0.92rem; }
+.tool__suite a { color: #7fe1e8; font-weight: 700; }
+.kid { padding: 0; }
+.kid__link { display: block; padding: 1.1rem 1.25rem 1.2rem; text-decoration: none; color: inherit; height: 100%; }
+.kid:hover { border-color: var(--accent); }
+.kid h3 { margin-bottom: 0.3rem; }
+.kid p { font-size: 0.92rem; }
+.suitelist h3 { margin-bottom: 0.6rem; }
+.suitelist__items { list-style: none; display: grid; gap: 0.2rem; }
+.suitelist__items a { display: grid; gap: 0.1rem; padding: 0.55rem 0.7rem; margin: 0 -0.7rem; border-radius: 10px; text-decoration: none; color: inherit; }
+.suitelist__items a:hover { background: var(--bg-alt); }
+.suitelist__items strong { color: var(--heading); }
+.suitelist__items span { font-size: 0.86rem; }

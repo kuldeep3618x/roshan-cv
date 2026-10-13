@@ -1,5 +1,5 @@
 import { portfolio, toolUsage, openSource } from '../data/cv.js';
-import { tools } from '../data/tools.js';
+import { tools, suiteChildren } from '../data/tools.js';
 import { toolHref } from '../router.js';
 import Reveal from './Reveal.jsx';
 import SectionHead from './SectionHead.jsx';
@@ -15,7 +15,7 @@ export default function Portfolio() {
         </p>
 
         <div className="grid grid--2">
-          {tools.map((t, i) => (
+          {tools.filter((t) => !t.suite).map((t, i) => (
             <Reveal key={t.slug} className="card feat" delay={(i % 2) * 80}>
               <a className="feat__link" href={toolHref(t.slug)}>
                 <div className={`feat__img ${t.image ? '' : 'feat__img--plain'}`}>
@@ -48,6 +48,31 @@ export default function Portfolio() {
               </a>
             </Reveal>
           ))}
+        </div>
+
+        <h3 className="tools__more">Inside the add-in suites</h3>
+        <div className="grid grid--2">
+          {Object.entries(suiteChildren).map(([suiteSlug, slugs]) => {
+            const suite = tools.find((t) => t.slug === suiteSlug);
+            return (
+              <Reveal key={suiteSlug} className="card suitelist">
+                <h3>{suite.name}</h3>
+                <ul className="suitelist__items">
+                  {slugs.map((s) => {
+                    const t = tools.find((x) => x.slug === s);
+                    return t ? (
+                      <li key={s}>
+                        <a href={toolHref(s)}>
+                          <strong>{t.name}</strong>
+                          <span className="muted">{t.tagline}</span>
+                        </a>
+                      </li>
+                    ) : null;
+                  })}
+                </ul>
+              </Reveal>
+            );
+          })}
         </div>
 
         <h3 className="tools__more">Open source on GitHub</h3>

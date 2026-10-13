@@ -353,8 +353,21 @@ const base = [
 ];
 
 import { suites } from './suites.js';
+import { addins, suiteChildren } from './addins.js';
 
-// Suites first (most recent work), then the six original tool pages.
-export const tools = [...suites, ...base];
+// Individual add-in pages get a generated walkthrough video at videos/<slug>.mp4.
+const addinPages = addins.map((a) => ({
+  ...a,
+  video: `videos/${a.slug}.mp4`,
+  videoCaption: 'Animated walkthrough of the problem, the design and the build. No client information.',
+}));
+
+export { suiteChildren };
+
+// Suites first (most recent work), then the individual add-in tools, then the six original tool pages.
+export const tools = [...suites, ...addinPages, ...base];
+
+// Which suite a tool belongs to, if any.
+export const suiteOf = (slug) => Object.keys(suiteChildren).find((k) => suiteChildren[k].includes(slug)) || null;
 
 export const toolBySlug = Object.fromEntries(tools.map((t) => [t.slug, t]));
