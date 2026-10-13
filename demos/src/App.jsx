@@ -15,6 +15,7 @@ import WarningRemover from './pages/WarningRemover.jsx';
 import LinkLoader from './pages/LinkLoader.jsx';
 import RevitModelHealth from './pages/RevitModelHealth.jsx';
 import ParameterUpdater from './pages/ParameterUpdater.jsx';
+import { NavisworksRibbon, RevitRibbon } from './pages/SuiteRibbon.jsx';
 import Tour, { TOURS } from './Tour.jsx';
 
 const PAGES = [
@@ -34,6 +35,8 @@ const PAGES = [
   { n: '18', t: 'Link loader', k: 'Revit add-in tool', C: LinkLoader },
   { n: '19', t: 'Model health (Revit)', k: 'Revit add-in tool', C: RevitModelHealth },
   { n: '20', t: 'Parameter updater', k: 'Revit add-in tool', C: ParameterUpdater },
+  { n: '07', t: 'Navisworks suite', k: 'Navisworks add-in suite', C: NavisworksRibbon },
+  { n: '08', t: 'Revit suite', k: 'Revit add-in suite', C: RevitRibbon },
 ];
 
 const fromHash = () => {

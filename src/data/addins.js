@@ -15,6 +15,7 @@ export const addins = [
   /* ============================================================ NAVISWORKS */
   {
     slug: 'clash-approval',
+    image: 'showcase/clash-approval.jpg',
     demo: 7,
     demoHint: 'Click a status tile, select rows, then Approve Selected and Load Asset Info.',
     n: '11',
@@ -68,6 +69,7 @@ export const addins = [
 
   {
     slug: 'parameter-checker',
+    image: 'showcase/parameter-checker.jpg',
     demo: 8,
     demoHint: 'Untick a file, add a parameter name, then Run Parameter Check.',
     n: '12',
@@ -122,6 +124,7 @@ export const addins = [
 
   {
     slug: 'viewpoint-comments',
+    image: 'showcase/viewpoint-comments.jpg',
     demo: 9,
     demoHint: 'Select viewpoints, add a comment, then try an export.',
     n: '13',
@@ -174,6 +177,7 @@ export const addins = [
 
   {
     slug: 'hide-by-category',
+    image: 'showcase/hide-by-category.jpg',
     demo: 10,
     demoHint: 'Select categories and Hide Selected, then try Roofs.',
     n: '14',
@@ -226,6 +230,7 @@ export const addins = [
   /* ============================================================ REVIT */
   {
     slug: 'clash-parameters',
+    image: 'showcase/clash-parameters.jpg',
     demo: 11,
     demoHint: 'On Assign Values, tick a category and Apply, then watch the dashboard.',
     n: '15',
@@ -278,6 +283,7 @@ export const addins = [
 
   {
     slug: 'shared-parameters',
+    image: 'showcase/shared-parameters.jpg',
     demo: 12,
     demoHint: 'Click Preview, untick a row, then Apply Checked.',
     n: '16',
@@ -330,6 +336,7 @@ export const addins = [
 
   {
     slug: 'warning-remover',
+    image: 'showcase/warning-remover.jpg',
     demo: 13,
     demoHint: 'Tick duplicates, Preview Change, then Resolve Duplicates.',
     n: '17',
@@ -385,6 +392,7 @@ export const addins = [
 
   {
     slug: 'link-loader',
+    image: 'showcase/link-loader.jpg',
     demo: 14,
     demoHint: 'Tick Revit Selection, then Unload Checked.',
     n: '18',
@@ -437,6 +445,7 @@ export const addins = [
 
   {
     slug: 'revit-model-health-check',
+    image: 'showcase/revit-model-health-check.jpg',
     demo: 15,
     demoHint: 'Run the health check, then Import Settings and run it again.',
     n: '19',
@@ -490,6 +499,7 @@ export const addins = [
   },
   {
     slug: 'parameter-updater',
+    image: 'showcase/parameter-updater.jpg',
     n: '20',
     name: 'Parameter Updater',
     kind: 'Revit add-in tool',

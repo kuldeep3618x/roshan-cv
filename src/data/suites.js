@@ -7,6 +7,9 @@ export const suites = [
   /* -------------------------------------------------------------- Navisworks suite */
   {
     slug: 'navisworks-tools-suite',
+    image: 'showcase/navisworks-tools-suite.jpg',
+    demo: 17,
+    demoHint: 'Click each tool on the ribbon.',
     n: '07',
     name: 'Navisworks Tools Suite',
     kind: 'Navisworks add-in suite',
@@ -64,6 +67,9 @@ export const suites = [
   /* -------------------------------------------------------------- Revit suite */
   {
     slug: 'revit-tools-suite',
+    image: 'showcase/revit-tools-suite.jpg',
+    demo: 18,
+    demoHint: 'Click each tool on the ribbon, including the one marked soon.',
     n: '08',
     name: 'Revit Tools Suite',
     kind: 'Revit add-in suite',
@@ -120,6 +126,7 @@ export const suites = [
   /* -------------------------------------------------------------- BIM-Q Central */
   {
     slug: 'bim-q-central',
+    image: 'showcase/bim-q-central.jpg',
     n: '09',
     name: 'BIM-Q Central',
     kind: 'APS web app',
@@ -175,6 +182,7 @@ export const suites = [
   /* -------------------------------------------------------------- AddinHub */
   {
     slug: 'addinhub',
+    image: 'showcase/addinhub.jpg',
     n: '10',
     name: 'AddinHub',
     kind: 'Add-in control board and PC agent',
