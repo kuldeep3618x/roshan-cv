@@ -93,7 +93,7 @@ export const experience = [
       'Set up and manage Common Data Environment (CDE) structures, workflows and protocols in Autodesk Construction Cloud (ACC), working to ISO 19650 and keeping information governed across all disciplines.',
       'Ship two versioned, installable add-in suites: the Navisworks Tools suite v2.1.5 (Clash Tolerance, Approval, Analyser, Parameter Checker, Viewpoint Comments, Hide By Category) and the Revit Tools suite v1.4.1 (Clash and Shared Parameters, Warning Remover, Workset Assigner, Link Loader, Model Health Check). Every tool has its own page, demo and walkthrough on this site; Parameter Updater is in progress.',
       'Built and deployed BIM-Q Central, an APS platform tracking model-sharing compliance and issues per trade in ACC, with AddinHub to deploy, roll back and monitor add-ins by user or office.',
-      'Built an ACC to Microsoft Fabric data pipeline (APS Model Derivative, OneLake/Delta tables) feeding Power BI model and data quality reporting; published open-source tools on GitHub: NVClashAnalytics, RevitActiveQualityMonitor and SheetForge.',
+      'Built an ACC to Microsoft Fabric data pipeline (APS Model Derivative, OneLake/Delta tables) feeding Power BI model and data quality reporting.',
       'Apply AI tools and scripting to turn repetitive BIM workflows into reusable applications.',
     ],
   },
@@ -211,24 +211,3 @@ export const credentials = {
   ],
   honors: ['NASA Industrial Design Trophy, 2011'],
 };
-
-export const openSource = [
-  {
-    name: 'NVClashAnalytics',
-    stack: 'Navisworks plug-in · WebView2 dashboard',
-    text: 'Turns Clash Detective results into an interactive dashboard inside Navisworks: status, level, spatial heatmap and a discipline matrix. Navisworks 2024 to 2027.',
-    url: 'https://github.com/roshanjohnOBMI/NVClashAnalytics',
-  },
-  {
-    name: 'RevitActiveQualityMonitor',
-    stack: 'Revit 2026 · dockable pane',
-    text: 'Real-time model quality monitoring in Revit: live overview, customisable clash tests, parameter rule checks and analytics charts.',
-    url: 'https://github.com/roshanjohnOBMI/RevitActiveQualityMonitor',
-  },
-  {
-    name: 'SheetForge',
-    stack: 'Node.js · APS Model Derivative · ACC',
-    text: 'Exports ACC Revit sheets as PDFs renamed from title-block and sheet parameters, delivered to an ACC folder or as a ZIP.',
-    url: 'https://github.com/roshanjohnOBMI/sheetforge',
-  },
-];

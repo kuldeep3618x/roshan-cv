@@ -1,4 +1,4 @@
-import { portfolio, toolUsage, openSource } from '../data/cv.js';
+import { portfolio, toolUsage } from '../data/cv.js';
 import { tools } from '../data/tools.js';
 
 // One flat list, in numeric order: the original tools, the two suites, the platform, then each individual add-in.
@@ -48,20 +48,6 @@ export default function Portfolio() {
                   </ul>
                   <span className="feat__cta">{t.demo ? 'View demo & architecture →' : 'View architecture & walkthrough →'}</span>
                 </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-
-        <h3 className="tools__more">Open source on GitHub</h3>
-        <div className="grid grid--3">
-          {openSource.map((r, i) => (
-            <Reveal key={r.name} className="card repo" delay={i * 60}>
-              <h3>{r.name}</h3>
-              <p className="app__stack">{r.stack}</p>
-              <p className="muted">{r.text}</p>
-              <a className="feat__cta" href={r.url} target="_blank" rel="noreferrer">
-                View on GitHub ↗
               </a>
             </Reveal>
           ))}
