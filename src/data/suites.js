@@ -178,7 +178,7 @@ export const suites = [
     n: '10',
     name: 'AddinHub',
     kind: 'Add-in control board and PC agent',
-    status: 'In development',
+    status: 'Deployed',
     stack: ['Node.js', 'SQLite', 'PowerShell agent', 'C# hooks for Revit and Navisworks', 'Windows DPAPI'],
     tagline: 'Deploy, roll back and monitor the Revit and Navisworks add-ins by user or office, with a kill switch.',
     problem:
