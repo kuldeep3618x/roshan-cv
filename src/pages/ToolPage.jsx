@@ -48,6 +48,12 @@ export default function ToolPage({ slug }) {
           <p className="tool__tagline">{tool.tagline}</p>
           <div className="tool__meta">
             <span className={`badge badge--${tool.status === 'Built' ? 'built' : 'wip'}`}>{tool.status}</span>
+            {tool.version && (
+              <span className="badge badge--ver">
+                {tool.version}
+                {tool.released ? ` · ${tool.released}` : ''}
+              </span>
+            )}
             <ul className="chips chips--light">
               {tool.stack.map((s) => (
                 <li key={s} className="chip">
@@ -72,23 +78,50 @@ export default function ToolPage({ slug }) {
             </ul>
           </Reveal>
           <Reveal delay={100}>
-            <a className="tool__shot" href={tool.image} target="_blank" rel="noreferrer" title="Open full size">
-              <img src={tool.image} alt={`${tool.name} — illustration with sample data`} width="1600" height="900" loading="lazy" />
-              <span>Illustration with sample data</span>
-            </a>
+            {tool.image ? (
+              <a className="tool__shot" href={tool.image} target="_blank" rel="noreferrer" title="Open full size">
+                <img src={tool.image} alt={`${tool.name} — illustration with sample data`} width="1600" height="900" loading="lazy" />
+                <span>Illustration with sample data</span>
+              </a>
+            ) : (
+              <div className="tool__plain" aria-hidden="true">
+                <span className="tool__plainnum">{tool.n}</span>
+                <strong>{tool.name}</strong>
+                <span>{tool.version ? `${tool.version} · ${tool.kind}` : tool.kind}</span>
+              </div>
+            )}
           </Reveal>
         </div>
       </section>
 
-      <section className="section section--alt" id="demo">
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Try it</p>
-            <h2>Interactive demo</h2>
+      {tool.video && (
+        <section className="section section--alt" id="video">
+          <div className="container">
+            <div className="section-head">
+              <p className="eyebrow">Watch</p>
+              <h2>Walkthrough</h2>
+            </div>
+            <figure className="vid">
+              <video className="vid__el" controls preload="metadata" playsInline src={tool.video}>
+                Your browser cannot play this video.
+              </video>
+              {tool.videoCaption && <figcaption>{tool.videoCaption}</figcaption>}
+            </figure>
           </div>
-          <DemoFrame index={Number(tool.n)} title={tool.name} hint={tool.demoHint} />
-        </div>
-      </section>
+        </section>
+      )}
+
+      {tool.demo && (
+        <section className="section section--alt" id="demo">
+          <div className="container">
+            <div className="section-head">
+              <p className="eyebrow">Try it</p>
+              <h2>Interactive demo</h2>
+            </div>
+            <DemoFrame index={tool.demo} title={tool.name} hint={tool.demoHint} />
+          </div>
+        </section>
+      )}
 
       <section className="section" id="architecture">
         <div className="container">

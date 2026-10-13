@@ -3,7 +3,7 @@
 // Steps highlight nodes (by id) and edges (by index into `edges`).
 // Everything here is generic: no client names, tenant details or credentials.
 
-export const tools = [
+const base = [
   /* ------------------------------------------------------------------ 01 */
   {
     slug: 'clash-tolerance',
@@ -13,6 +13,8 @@ export const tools = [
     status: 'Built',
     image: 'showcase/1-navisworks-clash-tolerance.jpg',
     demo: 1,
+    video: 'videos/tool-1.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Tick some tests, change the tolerance and hit Apply.',
     stack: ['C#', '.NET Framework 4.8', 'Navisworks API', 'WPF'],
     tagline: 'Set the tolerance on every Clash Detective test from one window, in one undoable step.',
@@ -66,6 +68,8 @@ export const tools = [
     status: 'Built',
     image: 'showcase/2-navisworks-clash-analyser.jpg',
     demo: 2,
+    video: 'videos/tool-2.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Click a status tile to slice the per-test table.',
     stack: ['C#', '.NET Framework 4.8', 'Navisworks API', 'WPF', 'Excel matrix checks'],
     tagline: 'A live clash dashboard inside Navisworks, so coordination meetings start from the numbers.',
@@ -121,6 +125,8 @@ export const tools = [
     status: 'Built',
     image: 'showcase/3-revit-workset-assigner.jpg',
     demo: 3,
+    video: 'videos/tool-3.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Click a workset, switch the scope and hit Apply.',
     stack: ['C#', 'Revit API', '.NET Framework 4.7 / 4.8 and .NET 8', 'WPF', 'JSON rule sets'],
     tagline: 'Define your workset standard once as rules, preview what will move, then apply it.',
@@ -175,6 +181,8 @@ export const tools = [
     status: 'In progress',
     image: 'showcase/4-aps-acc-fabric-bridge.jpg',
     demo: 4,
+    video: 'videos/tool-4.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Untick a model, then hit Extract selected.',
     stack: ['Node.js', 'APS Data Management', 'APS Model Derivative', 'Microsoft Graph', 'OneLake / Delta', 'Power BI'],
     tagline: 'Land Revit element and property data from Autodesk Construction Cloud in a Fabric Lakehouse, ready for Power BI.',
@@ -234,6 +242,8 @@ export const tools = [
     status: 'In progress',
     image: 'showcase/5-aps-model-health-check.jpg',
     demo: 5,
+    video: 'videos/tool-5.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Filter by tile, click a row for check detail, then Run again.',
     stack: ['React', 'TypeScript', 'Node.js', 'Design Automation for Revit', 'C# Revit plug-in', 'Excel export'],
     tagline: 'Run a QA ruleset across a batch of ACC Revit models in the cloud, with no downloads and no desktop Revit.',
@@ -292,6 +302,8 @@ export const tools = [
     status: 'Built',
     image: 'showcase/6-aps-midp-tidp-check.jpg',
     demo: 6,
+    video: 'videos/tool-6.mp4',
+    videoCaption: 'Walkthrough with sample data.',
     demoHint: 'Filter Found or Missing, or search a document number.',
     stack: ['React', 'TypeScript', 'Node.js', 'ACC Data Management', 'Excel (exceljs)'],
     tagline: 'Compare the information delivery plan against what is actually in ACC, so teams see what is delivered and what is missing.',
@@ -339,5 +351,10 @@ export const tools = [
     ],
   },
 ];
+
+import { suites } from './suites.js';
+
+// Suites first (most recent work), then the six original tool pages.
+export const tools = [...suites, ...base];
 
 export const toolBySlug = Object.fromEntries(tools.map((t) => [t.slug, t]));

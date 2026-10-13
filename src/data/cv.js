@@ -14,7 +14,7 @@ export const profile = {
 
 export const stats = [
   { value: '11+', label: 'Years of experience' },
-  { value: '6+', label: 'Custom add-ins & automations' },
+  { value: '12', label: 'Add-in tools in 2 suites' },
   { value: '3', label: 'Giga-scale projects' },
   { value: '5+', label: 'Platforms: Revit · ACC · APS · Power BI' },
 ];
@@ -22,7 +22,7 @@ export const stats = [
 export const summary = [
   'BIM Manager and Lead Architect with 11+ years in BIM management, information management and design automation, delivering large-scale, complex, multidisciplinary projects — airports, stadiums, high-rise towers and giga-projects.',
   'I define project information strategy, develop BIM Execution Plans (BEP), and set up and manage Common Data Environment (CDE) structures, workflows and protocols in Autodesk Construction Cloud (ACC) in line with ISO 19650, keeping information structured, governed and consistent across all disciplines.',
-  'I am also a hands-on developer: I build the tools teams use in C#, JavaScript/TypeScript, Python and Dynamo — add-ins for Revit, Navisworks and Civil 3D, Design Automation apps, and Autodesk Platform Services (APS) web apps with React and Node.js that connect ACC to Power BI and Microsoft Fabric. I use AI-assisted development to ship internal tools faster, turning repetitive BIM and data tasks into reliable, self-service applications.',
+  'I am also a hands-on developer: I ship the tools teams use in C#, JavaScript/TypeScript, Python and Dynamo — two installable add-in suites for Navisworks and Revit (12 tools), and Autodesk Platform Services (APS) web apps with React and Node.js that connect ACC to Power BI and Microsoft Fabric. I use AI-assisted development to ship internal tools faster, turning repetitive BIM and data tasks into reliable, self-service applications.',
 ];
 
 export const focus = [
@@ -67,7 +67,7 @@ export const portfolio = [
 
 export const skillGroups = [
   { title: 'Autodesk platform', items: ['Revit', 'Navisworks Manage', 'AutoCAD', 'Civil 3D', 'Dynamo', 'Autodesk Construction Cloud (ACC)', 'Autodesk Platform Services (APS / Forge)'] },
-  { title: 'Development & automation', items: ['C# / .NET', 'Revit, Navisworks & Civil 3D API', 'Python', 'pyRevit', 'JavaScript', 'TypeScript', 'React', 'Node.js', 'Power BI', 'Power Automate', 'Power Apps', 'Git', 'Azure'] },
+  { title: 'Development & automation', items: ['C# / .NET', 'Revit, Navisworks & Civil 3D API', 'Python', 'pyRevit', 'JavaScript', 'TypeScript', 'React', 'Node.js', 'Power BI', 'Power Automate', 'Power Apps', 'WiX / MSI installers', 'Git', 'Azure'] },
   { title: 'Information management', items: ['ISO 19650', 'BIM Execution Plans (BEP)', 'CDE setup & governance', 'Clash coordination', 'MEP coordination', 'Authority submittals'] },
 ];
 
@@ -89,11 +89,12 @@ export const experience = [
     place: 'Dubai, UAE',
     current: true,
     bullets: [
-      'Lead BIM and information management strategy, standards and execution planning across live projects, ensuring model quality, consistent information delivery and effective clash resolution.',
+      'Lead BIM and information management strategy, standards and execution planning across live projects: model quality, information delivery and clash resolution.',
       'Set up and manage Common Data Environment (CDE) structures, workflows and protocols in Autodesk Construction Cloud (ACC), working to ISO 19650 and keeping information governed across all disciplines.',
-      'Drive automation as a hands-on developer: C# add-ins for Revit and Navisworks (incl. a Clash Tolerance Updater), APS Design Automation apps, and APS web apps (Node.js, React, TypeScript) integrated with ACC.',
-      'Built an ACC to Microsoft Fabric data pipeline (APS Model Derivative, OneLake/Delta tables) feeding Power BI model and data quality reporting.',
-      'Apply AI tools and scripting to turn repetitive BIM workflows into reusable applications, bridging design teams, project leadership and consultants.',
+      'Ship two versioned, installable add-in suites for the team: OBMI Navisworks Tools v2.1.5 (Clash Tolerance, Approval, Analyser, Parameter Checker, Viewpoint Comments, Hide By Category) and OBMI Revit Tools v1.4.1 (Clash and Shared Parameters, Warning Remover, Workset Assigner, Link Loader, Model Health Check), each with a changelog and user guide.',
+      'Build OBMI Meridian, an APS web dashboard that tracks model-sharing compliance and issue progress per trade in ACC, and AddinHub, a control board and PC agent that deploys, rolls back and monitors the add-ins by user or office.',
+      'Built an ACC to Microsoft Fabric data pipeline (APS Model Derivative, OneLake/Delta tables) feeding Power BI model and data quality reporting; published open-source tools on GitHub: NVClashAnalytics, RevitActiveQualityMonitor and SheetForge.',
+      'Apply AI tools and scripting to turn repetitive BIM workflows into reusable applications.',
     ],
   },
   {
@@ -210,3 +211,24 @@ export const credentials = {
   ],
   honors: ['NASA Industrial Design Trophy, 2011'],
 };
+
+export const openSource = [
+  {
+    name: 'NVClashAnalytics',
+    stack: 'Navisworks plug-in · WebView2 dashboard',
+    text: 'Turns Clash Detective results into an interactive dashboard inside Navisworks: status, level, spatial heatmap and a discipline matrix. Navisworks 2024 to 2027.',
+    url: 'https://github.com/roshanjohnOBMI/NVClashAnalytics',
+  },
+  {
+    name: 'RevitActiveQualityMonitor',
+    stack: 'Revit 2026 · dockable pane',
+    text: 'Real-time model quality monitoring in Revit: live overview, customisable clash tests, parameter rule checks and analytics charts.',
+    url: 'https://github.com/roshanjohnOBMI/RevitActiveQualityMonitor',
+  },
+  {
+    name: 'SheetForge',
+    stack: 'Node.js · APS Model Derivative · ACC',
+    text: 'Exports ACC Revit sheets as PDFs renamed from title-block and sheet parameters, delivered to an ACC folder or as a ZIP.',
+    url: 'https://github.com/roshanjohnOBMI/sheetforge',
+  },
+];
